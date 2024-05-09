@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Question } from './models/question';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.sass'
 })
 export class AppComponent {
-  title = 'interview-helper';
+  questions = [
+    new Question(1, "What is the State Capital?", "Austin", "Geographic", 1),
+    new Question(1, "What is the State Capital?", "Austin", "Geographic", 1),
+    new Question(1, "What is the State Capital?", "Austin", "Geographic", 1),
+    new Question(1, "What is the State Capital?", "Austin", "Geographic", 1),
+  ];
 }
