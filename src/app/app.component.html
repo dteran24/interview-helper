@@ -1,1 +1,6 @@
+<div class="card-container">
+  @for (item of questions; track item.id) {
+  <question-card [question]="item" />
+  }
+</div>
 <router-outlet />
