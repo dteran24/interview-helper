@@ -1,8 +1,15 @@
-<div [ngClass]="{'flex': isSelected, 'noFlex': !isSelected}">
-  <div [ngClass]="{'grid': !isSelected}">
-    @for (item of questions; track item.id) {
-    <question-card [question]="item" [isSelected]="isSelected"/>
+<div [ngClass]="{ flex: isSelected, noFlex: !isSelected }">
+  <div [ngClass]="{ grid: !isSelected }">
+    @for (item of filteredList; track item.id) {
+    <question-card
+      [question]="item"
+      (selectedCardData)="handleSelectedCard($event)"
+      [isSelected]="isSelected"
+    />
     }
   </div>
+  @if (selectedCard.id) {
+  <question-card [question]="selectedCard" [isSelected]="isSelected"/>
+  }
 </div>
 <router-outlet />

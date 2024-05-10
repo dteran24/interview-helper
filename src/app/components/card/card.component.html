@@ -1,3 +1,4 @@
-<div class="card" [ngClass]="{'card-selected': isSelected, 'card-not-selected': !isSelected}">
+
+<div class="card" [ngClass]="{'card-selected': isSelected, 'card-not-selected': !isSelected}" (click)="selectItem()">
     <p>{{question.question}}</p>
 </div>
