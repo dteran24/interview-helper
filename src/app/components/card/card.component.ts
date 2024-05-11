@@ -10,14 +10,24 @@ import { NgClass } from '@angular/common';
   styleUrl: './card.component.sass',
 })
 export class CardComponent {
-  @Input() isSelected!: boolean 
-  @Input() question: Question = {} as Question;
-  @Output() isSelectedData = new EventEmitter<boolean>();
+  @Input() changeFormat!: boolean;
+  @Input() question?: Question;
+  @Input() selectedQuestion?: Question;
+
   @Output() selectedCardData = new EventEmitter<Question>();
 
   selectItem() {
     this.selectedCardData.emit(this.question);
+    this.resetShowAnswer();
   }
-
+  show() {
+    if (this.selectedQuestion) {
+      this.selectedQuestion.selected = !this.selectedQuestion.selected
+    }
   }
-
+  resetShowAnswer() {
+    if (this.question) {
+      this.question.selected = false;
+    }
+  }
+}

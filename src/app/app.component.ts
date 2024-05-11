@@ -12,19 +12,33 @@ import { NgClass } from '@angular/common';
   imports: [RouterOutlet, CardComponent, NgClass],
 })
 export class AppComponent {
-  isSelected = false;
+  changeFormat = false;
   selectedCard = {} as Question;
   questions = [
-    new Question(1, 'What is the State Capital?', 'Austin', 'Geographic', 1),
-    new Question(2, 'What is ABC?', 'Austin', 'Geographic', 1),
-    new Question(3, 'Who let the dogs out?', 'Austin', 'Geographic', 1),
-    new Question(4, 'What is the mitochondria?', 'Austin', 'Geographic', 1),
+    new Question(
+      1,
+      'What is the State Capital?',
+      'Austin',
+      'Geographic',
+      1,
+      false
+    ),
+    new Question(2, 'What is ABC?', 'Letters', 'Geographic', 1, false),
+    new Question(3, 'Who let the dogs out?', 'I did', 'Geographic', 1, false),
+    new Question(
+      4,
+      'What is the mitochondria?',
+      'PowerHouse',
+      'Geographic',
+      1,
+      false
+    ),
   ];
   filteredList: Question[] = this.questions;
 
   handleSelectedCard(selectedQuestion: Question) {
     this.selectedCard = selectedQuestion;
-    this.isSelected = true;
+    this.changeFormat = true;
     this.filteredList = this.questions.filter(
       (question) => question.id !== selectedQuestion.id
     );

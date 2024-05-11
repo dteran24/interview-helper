@@ -1,4 +1,27 @@
-
-<div class="card" [ngClass]="{'card-selected': isSelected, 'card-not-selected': !isSelected}" (click)="selectItem()">
-    <p>{{question.question}}</p>
+@if (question) {
+<div
+  class="card"
+  [ngClass]="{
+      widthLarge: changeFormat,
+      widthSmall: !changeFormat,
+    }"
+  (click)="[selectItem()]"
+>
+  <p>{{ question.question }}</p>
 </div>
+}@else if (selectedQuestion) {
+<div
+  class="card selectedCard"
+  [ngClass]="{
+      widthLarge: changeFormat,
+      widthSmall: !changeFormat,
+    }"
+  (click)="show()"
+>
+  @if (selectedQuestion.selected) {
+  <p>{{ selectedQuestion.answer }}</p>
+  }@else {
+  <p>{{ selectedQuestion.question }}</p>
+  }
+</div>
+}

@@ -4,6 +4,7 @@ export class Question {
     public question: string,
     public answer: string,
     public tag: string,
-    public difficulty: number
+    public difficulty: number,
+    public selected:boolean
   ) {}
 }
