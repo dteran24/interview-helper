@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 import { Question } from './models/question';
 import { CardComponent } from './components/card/card.component';
 import { NgClass } from '@angular/common';
+import { FilterComponent } from "./components/filter/filter.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.sass',
-  imports: [RouterOutlet, CardComponent, NgClass],
+    selector: 'app-root',
+    standalone: true,
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.sass',
+    imports: [RouterOutlet, CardComponent, NgClass, FilterComponent]
 })
 export class AppComponent {
   changeFormat = false;
