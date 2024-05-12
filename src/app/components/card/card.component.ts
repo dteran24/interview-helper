@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import {MatCardModule} from '@angular/material/card';
 import { Question } from '../../models/question';
 import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'question-card',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass, MatCardModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.sass',
 })

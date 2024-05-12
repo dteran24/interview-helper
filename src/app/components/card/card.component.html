@@ -1,5 +1,5 @@
 @if (question) {
-<div
+<mat-card
   class="card"
   [ngClass]="{
       widthLarge: changeFormat,
@@ -7,21 +7,22 @@
     }"
   (click)="[selectItem()]"
 >
-  <p>{{ question.question }}</p>
-</div>
+  <mat-card-content>{{ question.question }}</mat-card-content>
+</mat-card>
 }@else if (selectedQuestion) {
-<div
+<mat-card
   class="card selectedCard"
   [ngClass]="{
       widthLarge: changeFormat,
       widthSmall: !changeFormat,
     }"
   (click)="show()"
->
-  @if (selectedQuestion.selected) {
-  <p>{{ selectedQuestion.answer }}</p>
-  }@else {
-  <p>{{ selectedQuestion.question }}</p>
-  }
-</div>
+  ><mat-card-content>
+    @if (selectedQuestion.selected) {
+    <p>{{ selectedQuestion.answer }}</p>
+    }@else {
+    <p>{{ selectedQuestion.question }}</p>
+    }
+  </mat-card-content>
+</mat-card>
 }

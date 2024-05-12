@@ -1,16 +1,21 @@
-<filter/>
-<div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
-  <div [ngClass]="{ grid: !changeFormat }">
-    @for (item of filteredList; track item.id) {
+<div class="appContainer">
+  <filter />
+  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
+    <div [ngClass]="{ grid: !changeFormat }">
+      @for (item of filteredList; track item.id) {
+      <question-card
+        [question]="item"
+        (selectedCardData)="handleSelectedCard($event)"
+        [changeFormat]="changeFormat"
+      />
+      }
+    </div>
+    @if (selectedCard) {
     <question-card
-      [question]="item"
-      (selectedCardData)="handleSelectedCard($event)"
+      [selectedQuestion]="selectedCard"
       [changeFormat]="changeFormat"
     />
     }
   </div>
-  @if (selectedCard) {
-  <question-card [selectedQuestion]="selectedCard" [changeFormat]="changeFormat"/>
-  }
 </div>
 <router-outlet />

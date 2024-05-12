@@ -1,3 +1,14 @@
-<div>
-    
+<div class="iconContainer">
+  @if (isOpen) {
+  <button mat-icon-button="button with filter" (click)="toggleFilter()">
+    <mat-icon class="icon">close</mat-icon>
+  </button>
+  }@else {
+  <button mat-icon-button="button with filter" (click)="toggleFilter()">
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  }
 </div>
+@if(isOpen){
+<div class="filterContainer">Filters Here!</div>
+}
