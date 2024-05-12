@@ -11,18 +11,58 @@
 </div>
 @if(isOpen){
 <div class="filterContainer">
-  <button mat-button [matMenuTriggerFor]="typeMenu" style="color: white;">
-    Question Type: {{type}}
-  </button>
-  <mat-menu #typeMenu="matMenu">
-    @for (type of types; track $index) {
-    <button mat-menu-item (click)="changeType(type)">{{type}}</button>
-    }
-  </mat-menu>
   <div>
-    @for (tag of tags; track $index) {
-      <mat-checkbox color="primary" [disabled]="this.type === 'Behavioral'">{{tag}}</mat-checkbox>
-    }
+    <button mat-button [matMenuTriggerFor]="typeMenu" style="color: white">
+      Type
+    </button>
+    <mat-menu #typeMenu="matMenu" class="dropdown">
+      @for (type of typeList; track $index) {
+      <mat-checkbox (click)="$event.stopPropagation()">{{ type }}</mat-checkbox>
+      }
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="diffMenu" style="color: white">
+      Difficulty
+    </button>
+    <mat-menu #diffMenu="matMenu">
+      @for (difficulty of difficultyList; track $index) {
+      <mat-checkbox (click)="$event.stopPropagation()">{{
+        difficulty
+      }}</mat-checkbox>
+      }
+    </mat-menu>
+
+    <button
+      mat-button
+      [matMenuTriggerFor]="tagMenu"
+      [disabled]="this.type === 'Behavioral'"
+      style="color: white"
+    >
+      Tags
+    </button>
+    <mat-menu #tagMenu="matMenu">
+      @for (tag of tagList; track $index) {
+      <mat-checkbox (click)="$event.stopPropagation()">{{ tag }}</mat-checkbox>
+      }
+    </mat-menu>
+  </div>
+  <div>
+    <button
+      mat-icon-button
+      [matMenuTriggerFor]="sortMenu"
+      style="color: white"
+    >
+      <mat-icon>sort</mat-icon>
+    </button>
+    <mat-menu #sortMenu="matMenu">
+      @for (sort of sortList; track $index) {
+        <button mat-menu-item (click)="$event.stopPropagation()">
+          <span>{{sort}}</span>
+          @if(sortType){<mat-icon>arrow_downward</mat-icon>}@else{}
+        </button>
+      }
+
+    </mat-menu>
   </div>
 </div>
 }
