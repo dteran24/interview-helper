@@ -10,5 +10,19 @@
   }
 </div>
 @if(isOpen){
-<div class="filterContainer">Filters Here!</div>
+<div class="filterContainer">
+  <button mat-button [matMenuTriggerFor]="typeMenu" style="color: white;">
+    Question Type: {{type}}
+  </button>
+  <mat-menu #typeMenu="matMenu">
+    @for (type of types; track $index) {
+    <button mat-menu-item (click)="changeType(type)">{{type}}</button>
+    }
+  </mat-menu>
+  <div>
+    @for (tag of tags; track $index) {
+      <mat-checkbox color="primary" [disabled]="this.type === 'Behavioral'">{{tag}}</mat-checkbox>
+    }
+  </div>
+</div>
 }

@@ -1,24 +1,29 @@
 import { Component } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faSliders } from '@fortawesome/free-solid-svg-icons';
 import { MatIconModule } from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 @Component({
   selector: 'filter',
   standalone: true,
-  imports: [FontAwesomeModule, MatIconModule,MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.sass',
 })
 export class FilterComponent {
-  filterIcon = faSliders;
-  isOpen = false;
-  types = ['Technical', 'Behavioral'];
+  types = ['Technical', 'Behavioral', 'All'];
   tags = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
   difficulty = [1, 2, 3, 4, 5];
-  showFilters = false;
+  type = 'All';
+  isOpen = false;
+
   toggleFilter() {
     this.isOpen = !this.isOpen;
   }
+  changeType(type: string) {
+    this.type = type;
+  }
+
 }
