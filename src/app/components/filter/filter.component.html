@@ -58,7 +58,9 @@
       @for (sort of sortList; track $index) {
         <button mat-menu-item (click)="$event.stopPropagation()">
           <span>{{sort}}</span>
-          @if(sortType){<mat-icon>arrow_downward</mat-icon>}@else{}
+          @if(sortType){<mat-icon>arrow_downward</mat-icon>}@else{
+            
+          }
         </button>
       }
 

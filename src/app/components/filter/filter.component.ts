@@ -15,7 +15,7 @@ export class FilterComponent {
   typeList = ['Technical', 'Behavioral'];
   tagList = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
   difficultyList = ['Easy', 'Medium', 'Hard'];
-  sortList = ['Alphabetically','Date Posted']
+  sortList = ['Date Posted']
   type = '';
   difficulty = '';
   sortType = '';
@@ -32,4 +32,5 @@ export class FilterComponent {
   changeType(type: string) {
     this.type = type;
   }
+ 
 }
