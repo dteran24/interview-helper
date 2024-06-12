@@ -73,6 +73,7 @@ export class QuestionsService {
   addQuestion(question: Question) {
     this.questions.push(question);
     this.questionsSubject.next(this.questions); // Emit the updated questions
+    console.log(this.questions)
   }
   sortByDate(){}
 }

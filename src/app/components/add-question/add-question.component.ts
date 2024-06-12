@@ -5,11 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import {MatRadioModule} from '@angular/material/radio';
 import { QuestionsService } from '../../services/questions.service';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
@@ -29,6 +29,7 @@ import { Question } from '../../models/question';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatRadioModule
   ],
   templateUrl: './add-question.component.html',
   styleUrl: './add-question.component.sass',
@@ -37,6 +38,7 @@ export class AddQuestionComponent {
   displayForm = false;
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
+  type = '';
   errorMessage = '';
   constructor(
     private questionsService: QuestionsService,
@@ -57,7 +59,7 @@ export class AddQuestionComponent {
       4,
       this.question.value!,
       this.answer.value!,
-      'Technical',
+      this.type,
       ['React'],
       3,
       false
@@ -65,6 +67,7 @@ export class AddQuestionComponent {
     this.questionsService.addQuestion(userQuestion);
     this.question.reset('');
     this.answer.reset('');
+    this.type = '';
     this.displayForm = false;
   }
   displayFormHandler() {
@@ -73,6 +76,7 @@ export class AddQuestionComponent {
   onCancel() {
     this.displayForm = false;
   }
+ 
 
   updateErrorMessage() {
     if (this.question.hasError('required')) {

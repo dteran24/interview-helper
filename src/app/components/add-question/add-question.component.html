@@ -19,6 +19,10 @@
     <mat-error>{{ errorMessage }}</mat-error
     >}
   </mat-form-field>
+  <mat-radio-group aria-label="question type" [(ngModel)]="type" name="type">
+    <mat-radio-button value="Technical">Technical</mat-radio-button>
+    <mat-radio-button value="Behavioral">Behavioral</mat-radio-button>
+  </mat-radio-group>
   <div class="buttonContainer">
     <button
       mat-flat-button
