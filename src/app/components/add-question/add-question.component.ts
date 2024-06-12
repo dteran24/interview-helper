@@ -5,8 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { QuestionsService } from '../../services/questions.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {
   FormBuilder,
   FormControl,
@@ -29,7 +32,10 @@ import { Question } from '../../models/question';
     MatIconModule,
     FormsModule,
     ReactiveFormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatButtonToggleModule
   ],
   templateUrl: './add-question.component.html',
   styleUrl: './add-question.component.sass',
@@ -39,11 +45,13 @@ export class AddQuestionComponent {
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
   type = '';
+  tags = [];
+  difficulty = '';
   errorMessage = '';
-  constructor(
-    private questionsService: QuestionsService,
-    private fb: FormBuilder
-  ) {
+  tagList = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
+  difficultyList = ['Easy', 'Medium', 'Hard'];
+
+  constructor(private questionsService: QuestionsService) {
     merge(
       this.question.statusChanges,
       this.question.valueChanges,
@@ -55,20 +63,22 @@ export class AddQuestionComponent {
   }
 
   onsubmit() {
-    let userQuestion = new Question(
-      4,
-      this.question.value!,
-      this.answer.value!,
-      this.type,
-      ['React'],
-      3,
-      false
-    );
-    this.questionsService.addQuestion(userQuestion);
-    this.question.reset('');
-    this.answer.reset('');
-    this.type = '';
-    this.displayForm = false;
+    if ((this.question.value, this.answer.value, this.type)) {
+      let userQuestion = new Question(
+        4,
+        this.question.value!,
+        this.answer.value!,
+        this.type,
+        ['React'],
+        3,
+        false
+      );
+      this.questionsService.addQuestion(userQuestion);
+      this.question.reset('');
+      this.answer.reset('');
+      this.type = '';
+      this.displayForm = false;
+    }
   }
   displayFormHandler() {
     this.displayForm = true;
@@ -76,7 +86,6 @@ export class AddQuestionComponent {
   onCancel() {
     this.displayForm = false;
   }
- 
 
   updateErrorMessage() {
     if (this.question.hasError('required')) {

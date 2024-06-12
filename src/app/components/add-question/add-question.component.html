@@ -2,7 +2,12 @@
 <form (ngSubmit)="onsubmit()">
   <mat-form-field [hideRequiredMarker]="true">
     <mat-label>Question</mat-label>
-    <input matInput [formControl]="question" (blur)="updateErrorMessage()" required/>
+    <input
+      matInput
+      [formControl]="question"
+      (blur)="updateErrorMessage()"
+      required
+    />
     @if (question.invalid) {
     <mat-error>{{ errorMessage }}</mat-error
     >}
@@ -19,10 +24,31 @@
     <mat-error>{{ errorMessage }}</mat-error
     >}
   </mat-form-field>
-  <mat-radio-group aria-label="question type" [(ngModel)]="type" name="type">
+  <div>
+    <h4>Type</h4>
+  <mat-radio-group aria-label="question type" [(ngModel)]="type" required>
     <mat-radio-button value="Technical">Technical</mat-radio-button>
     <mat-radio-button value="Behavioral">Behavioral</mat-radio-button>
   </mat-radio-group>
+</div>
+  <div class="tagContainer">
+    <h4>Tags</h4>
+    @for (tag of tagList; track $index) {
+    <mat-checkbox (click)="$event.stopPropagation()">{{ tag }}</mat-checkbox>
+    }
+  </div>
+  <div>
+    <h4>Difficulty</h4>
+    <mat-button-toggle-group  name="fontStyle" aria-label="Font Style">
+      @for (diff of difficultyList; track $index) {
+        <mat-button-toggle value="diff">{{diff}}</mat-button-toggle>
+  
+      }
+   
+    </mat-button-toggle-group>
+   
+  </div>
+
   <div class="buttonContainer">
     <button
       mat-flat-button
@@ -32,7 +58,12 @@
     >
       Cancel
     </button>
-    <button mat-flat-button color="primary" aria-label="add button" type="submit">
+    <button
+      mat-flat-button
+      color="primary"
+      aria-label="add button"
+      type="submit"
+    >
       Submit
     </button>
   </div>
