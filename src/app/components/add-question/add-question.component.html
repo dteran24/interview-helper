@@ -1,30 +1,47 @@
-
-<span
-  >Add a question? <span> <button mat-button>Click Here!</button></span></span
->
-<form action="">
-  <mat-form-field>
-    <mat-label>Input</mat-label>
-    <input matInput />
+@if (displayForm) {
+<form (ngSubmit)="onsubmit()">
+  <mat-form-field [hideRequiredMarker]="true">
+    <mat-label>Question</mat-label>
+    <input matInput [formControl]="question" (blur)="updateErrorMessage()" required/>
+    @if (question.invalid) {
+    <mat-error>{{ errorMessage }}</mat-error
+    >}
   </mat-form-field>
-  <mat-form-field>
-    <mat-label>Textarea</mat-label>
-    <textarea matInput></textarea>
+  <mat-form-field [hideRequiredMarker]="true">
+    <mat-label>Answer</mat-label>
+    <textarea
+      matInput
+      [formControl]="answer"
+      (blur)="updateErrorMessage()"
+      required
+    ></textarea>
+    @if (answer.invalid) {
+    <mat-error>{{ errorMessage }}</mat-error
+    >}
   </mat-form-field>
   <div class="buttonContainer">
     <button
       mat-flat-button
       color="warn"
-      aria-label="Example icon button with a home icon"
+      aria-label="cancel button"
+      (click)="onCancel()"
     >
       Cancel
     </button>
-    <button
-      mat-flat-button
-      color="primary"
-      aria-label="Example icon button with a home icon"
-    >
+    <button mat-flat-button color="primary" aria-label="add button" type="submit">
       Submit
     </button>
   </div>
 </form>
+}@else {
+
+<span class="formButton"
+  >Add a question?
+  <span>
+    <button mat-button color="basic" (click)="displayFormHandler()">
+      Click Here!
+    </button></span
+  ></span
+>
+
+}

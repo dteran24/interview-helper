@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Question } from '../models/question';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionsService {
+  private questionsSubject: Subject<Question[]> = new Subject<Question[]>();
   questions: Question[] = [
     new Question(
       1,
@@ -61,12 +63,16 @@ export class QuestionsService {
       false
     ),
   ];
-  constructor() {}
+  constructor() { }
+  getQuestionsObservable() {
+    return this.questionsSubject.asObservable(); 
+  }
   getQuestions(): Question[] {
     return this.questions;
   }
   addQuestion(question: Question) {
     this.questions.push(question);
+    console.log(this.questions)
   }
   sortByDate(){}
 }
