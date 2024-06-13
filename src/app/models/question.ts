@@ -5,7 +5,7 @@ export class Question {
     public answer: string,
     public type: string,
     public tag: string[],
-    public difficulty: number,
+    public difficulty: string,
     public selected: boolean
   ) {}
 }

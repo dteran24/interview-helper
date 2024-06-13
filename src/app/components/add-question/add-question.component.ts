@@ -45,7 +45,7 @@ export class AddQuestionComponent {
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
   type = '';
-  tags = [];
+  tags: string[] = [];
   difficulty = '';
   errorMessage = '';
   tagList = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
@@ -63,14 +63,14 @@ export class AddQuestionComponent {
   }
 
   onsubmit() {
-    if ((this.question.value, this.answer.value, this.type)) {
+    if ((this.question.value, this.answer.value)) {
       let userQuestion = new Question(
         4,
         this.question.value!,
         this.answer.value!,
         this.type,
-        ['React'],
-        3,
+        this.tags,
+        this.difficulty,
         false
       );
       this.questionsService.addQuestion(userQuestion);
@@ -78,6 +78,7 @@ export class AddQuestionComponent {
       this.answer.reset('');
       this.type = '';
       this.displayForm = false;
+      console.log(userQuestion)
     }
   }
   displayFormHandler() {
@@ -85,6 +86,18 @@ export class AddQuestionComponent {
   }
   onCancel() {
     this.displayForm = false;
+  }
+
+  onTagChange(event: any, tag: string) {
+    if (event.checked) {
+      this.tags.push(tag);
+    } else {
+      const index = this.tags.indexOf(tag);
+      if (index > -1) {
+        this.tags.splice(index, 1);
+      }
+    }
+    console.log(this.tags)
   }
 
   updateErrorMessage() {

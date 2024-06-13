@@ -1,4 +1,8 @@
 @if (displayForm) {
+  <div class="quoteContainer">
+  <h4 >“I am always doing that which I cannot do, in order that I may learn how to do it.”</h4>
+  <p>― Pablo Picasso</p>
+</div>
 <form (ngSubmit)="onsubmit()">
   <mat-form-field [hideRequiredMarker]="true">
     <mat-label>Question</mat-label>
@@ -26,27 +30,25 @@
   </mat-form-field>
   <div>
     <h4>Type</h4>
-  <mat-radio-group aria-label="question type" [(ngModel)]="type" required>
-    <mat-radio-button value="Technical">Technical</mat-radio-button>
-    <mat-radio-button value="Behavioral">Behavioral</mat-radio-button>
-  </mat-radio-group>
-</div>
+    <mat-radio-group aria-label="question type" [(ngModel)]="type" name="type" required>
+      <mat-radio-button value="Technical">Technical</mat-radio-button>
+      <mat-radio-button value="Behavioral">Behavioral</mat-radio-button>
+    </mat-radio-group>
+  </div>
   <div class="tagContainer">
     <h4>Tags</h4>
     @for (tag of tagList; track $index) {
-    <mat-checkbox (click)="$event.stopPropagation()">{{ tag }}</mat-checkbox>
+    <mat-checkbox (change)="onTagChange($event, tag)">{{ tag }}</mat-checkbox>
     }
   </div>
   <div>
     <h4>Difficulty</h4>
-    <mat-button-toggle-group  name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle-group name="difficulty" [(ngModel)]="difficulty"aria-label="difficulty">
       @for (diff of difficultyList; track $index) {
-        <mat-button-toggle value="diff">{{diff}}</mat-button-toggle>
-  
+      <mat-button-toggle value="diff">{{ diff }}</mat-button-toggle>
+
       }
-   
     </mat-button-toggle-group>
-   
   </div>
 
   <div class="buttonContainer">
