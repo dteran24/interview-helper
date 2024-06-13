@@ -17,7 +17,7 @@
     </button>
     <mat-menu #typeMenu="matMenu" class="dropdown">
       @for (type of typeList; track $index) {
-      <mat-checkbox (click)="$event.stopPropagation()">{{ type }}</mat-checkbox>
+      <button mat-menu-item (click)="selectType(type)">{{ type }}</button>
       }
     </mat-menu>
 
@@ -26,7 +26,7 @@
     </button>
     <mat-menu #diffMenu="matMenu">
       @for (difficulty of difficultyList; track $index) {
-      <mat-checkbox (click)="$event.stopPropagation()">{{
+      <mat-checkbox (change)="changeDifficulty($event, difficulty)" (click)="$event.stopPropagation()">{{
         difficulty
       }}</mat-checkbox>
       }
@@ -35,14 +35,14 @@
     <button
       mat-button
       [matMenuTriggerFor]="tagMenu"
-      [disabled]="this.type === 'Behavioral'"
+  
       style="color: white"
     >
       Tags
     </button>
     <mat-menu #tagMenu="matMenu">
       @for (tag of tagList; track $index) {
-      <mat-checkbox (click)="$event.stopPropagation()">{{ tag }}</mat-checkbox>
+      <mat-checkbox (change)="changeTag($event, tag)" (click)="$event.stopPropagation()">{{ tag }}</mat-checkbox>
       }
     </mat-menu>
   </div>
@@ -58,9 +58,6 @@
       @for (sort of sortList; track $index) {
         <button mat-menu-item (click)="$event.stopPropagation()">
           <span>{{sort}}</span>
-          @if(sortType){<mat-icon>arrow_downward</mat-icon>}@else{
-            
-          }
         </button>
       }
 

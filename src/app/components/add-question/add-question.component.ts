@@ -97,7 +97,6 @@ export class AddQuestionComponent {
         this.tags.splice(index, 1);
       }
     }
-    console.log(this.tags)
   }
 
   updateErrorMessage() {
