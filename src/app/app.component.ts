@@ -39,7 +39,11 @@ export class AppComponent implements OnInit {
       .getQuestionsObservable()
       .subscribe((questions) => {
         this.questions = questions;
-        this.filteredList = this.applyFilters();
+        this.filteredList = this.applyFilters({
+          type: '',
+          difficulties: [],
+          tags: [],
+        });
       });
   }
 
@@ -54,11 +58,15 @@ export class AppComponent implements OnInit {
   handleFilterChange(filters: FilterCriteria) {
     this.filteredList = this.applyFilters(filters);
   }
-  applyFilters(filters: FilterCriteria = { type: '', difficulties: [], tags: [] }): Question[] {
-    return this.questions.filter(question => {
+  applyFilters(filters: FilterCriteria): Question[] {
+    return this.questions.filter((question) => {
       const matchesType = !filters.type || question.type === filters.type;
-      const matchesDifficulty = !filters.difficulties.length || filters.difficulties.includes(question.difficulty);
-      const matchesTags = !filters.tags.length || filters.tags.some(tag => question.tags.includes(tag));
+      const matchesDifficulty =
+        !filters.difficulties.length ||
+        filters.difficulties.includes(question.difficulty);
+      const matchesTags =
+        !filters.tags.length ||
+        filters.tags.some((tag) => question.tags.includes(tag));
       return matchesType && matchesDifficulty && matchesTags;
     });
   }
