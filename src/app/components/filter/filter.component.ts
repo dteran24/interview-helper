@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FilterCriteria } from '../../models/filter';
 
 @Component({
   selector: 'filter',
@@ -12,47 +13,55 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   styleUrl: './filter.component.sass',
 })
 export class FilterComponent {
+  @Output() filterChanged = new EventEmitter<FilterCriteria>();
+
   typeList = ['Technical', 'Behavioral'];
   tagList = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
   difficultyList = ['Easy', 'Medium', 'Hard'];
   sortList = ['Date Posted'];
-  type:string  = "";
-  difficulties: string[] = [];
-  tags: string[] = [];
+  filterCriteria: FilterCriteria = {
+    type: '',
+    difficulties: [],
+    tags: [],
+  };
   isOpen = false;
-  constructor() {}
 
   toggleFilter() {
     this.isOpen = !this.isOpen;
   }
 
   changeDifficulty(event: any, difficulty: string) {
+    difficulty = difficulty.toLocaleLowerCase();
     if (event.checked) {
-      this.difficulties.push(difficulty);
+      this.filterCriteria.difficulties.push(difficulty);
     } else {
-      const index = this.difficulties.indexOf(difficulty);
+      const index = this.filterCriteria.difficulties.indexOf(difficulty);
       if (index > -1) {
-        this.difficulties.splice(index, 1);
+        this.filterCriteria.difficulties.splice(index, 1);
       }
     }
-    console.log(this.difficulties)
+    this.emitFilterChange();
   }
 
   selectType(type: string) {
-    this.type = type.toLocaleLowerCase();
-    console.log(this.type)
+    this.filterCriteria.type = type.toLocaleLowerCase();
+    this.emitFilterChange();
   }
 
   changeTag(event: any, tag: string) {
     if (event.checked) {
-      this.tags.push(tag);
+      this.filterCriteria.tags.push(tag);
     } else {
-      const index = this.tags.indexOf(tag);
+      const index = this.filterCriteria.tags.indexOf(tag);
       if (index > -1) {
-        this.tags.splice(index, 1);
+        this.filterCriteria.tags.splice(index, 1);
       }
     }
-    console.log(this.tags)
+    this.emitFilterChange();
   }
-  
+
+  emitFilterChange() {
+    this.filterChanged.emit(this.filterCriteria);
+    console.log(this.filterCriteria)
+  }
 }

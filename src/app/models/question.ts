@@ -4,8 +4,9 @@ export class Question {
     public question: string,
     public answer: string,
     public type: string,
-    public tag: string[],
+    public tags: string[],
     public difficulty: string,
     public selected: boolean
   ) {}
 }
+

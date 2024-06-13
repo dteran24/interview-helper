@@ -12,7 +12,7 @@ export class QuestionsService {
       1,
       'What is the state capital of Texas?',
       'Austin',
-      'geographic',
+      'technical',
       ['geographic'],
       "easy",
       false
@@ -23,7 +23,7 @@ export class QuestionsService {
       'In React, state is a built-in object that represents the data or information about the component. It can be changed over time and is managed internally by React. State allows React components to manage their data and respond to user actions.',
       'technical',
       ['React'],
-      "easy",
+      "medium",
       false
     ),
     new Question(

@@ -7,6 +7,7 @@ import { FilterComponent } from './components/filter/filter.component';
 import { QuestionsService } from './services/questions.service';
 import { AddQuestionComponent } from './components/add-question/add-question.component';
 import { Subscription } from 'rxjs';
+import { FilterCriteria } from './models/filter';
 
 @Component({
   selector: 'app-root',
@@ -38,10 +39,8 @@ export class AppComponent implements OnInit {
       .getQuestionsObservable()
       .subscribe((questions) => {
         this.questions = questions;
-        this.filteredList = [...this.questions];
+        this.filteredList = this.applyFilters();
       });
-
-    console.log(this.questions);
   }
 
   handleSelectedCard(selectedQuestion: Question) {
@@ -51,8 +50,20 @@ export class AppComponent implements OnInit {
       (question) => question.id !== selectedQuestion.id
     );
   }
+
+  handleFilterChange(filters: FilterCriteria) {
+    this.filteredList = this.applyFilters(filters);
+  }
+  applyFilters(filters: FilterCriteria = { type: '', difficulties: [], tags: [] }): Question[] {
+    return this.questions.filter(question => {
+      const matchesType = !filters.type || question.type === filters.type;
+      const matchesDifficulty = !filters.difficulties.length || filters.difficulties.includes(question.difficulty);
+      const matchesTags = !filters.tags.length || filters.tags.some(tag => question.tags.includes(tag));
+      return matchesType && matchesDifficulty && matchesTags;
+    });
+  }
+
   ngOnDestroy(): void {
-    // Unsubscribe to avoid memory leaks
     this.questionsSubscription.unsubscribe();
   }
 }
