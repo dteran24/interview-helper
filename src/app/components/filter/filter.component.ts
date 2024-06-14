@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FilterCriteria } from '../../models/filter';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'filter',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule, CommonModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.sass',
 })
@@ -23,6 +24,11 @@ export class FilterComponent {
     type: '',
     difficulties: [],
     tags: [],
+  };
+  titleMap: { [key: string]: string } = {
+    type: 'Type',
+    difficulties: 'Difficulty',
+    tags: 'Tags',
   };
   isOpen = false;
 
@@ -62,6 +68,19 @@ export class FilterComponent {
 
   emitFilterChange() {
     this.filterChanged.emit(this.filterCriteria);
-    console.log(this.filterCriteria)
+    console.log(this.filterCriteria);
+  }
+  objectKeys(obj: any) {
+    return Object.keys(obj);
+  }
+  getObjectValueByKey(obj: any, key: string) {
+    console.log(obj[key]);
+    return obj[key];
+  }
+
+  isAnyFilterActive(): boolean {
+    return this.filterCriteria.type !== '' || 
+           this.filterCriteria.difficulties.length > 0 || 
+           this.filterCriteria.tags.length > 0;
   }
 }
