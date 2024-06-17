@@ -1,7 +1,10 @@
 <div class="appContainer">
   <filter (filterChanged)="handleFilterChange($event)" />
   <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
-    <div [ngClass]="{ grid: !changeFormat }">
+    <div
+      class="questionContainer"
+      [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
+    >
       @for (item of filteredList; track item.id) {
       <question-card
         [question]="item"
@@ -11,13 +14,22 @@
       }
     </div>
     @if (selectedCard) {
-    <question-card
-      [selectedQuestion]="selectedCard"
-      [changeFormat]="changeFormat"
-    />
+    <div class="selectedCardContainer">
+      <question-card
+        [selectedQuestion]="selectedCard"
+        [changeFormat]="changeFormat"
+      />
+      <div class="buttonContainer">
+        <button mat-icon-button aria-label="" (click)="prevQuestion()">
+          <mat-icon class="icon">arrow_back</mat-icon>
+        </button>
+        <button mat-icon-button aria-label="" (click)="nextQuestion()">
+          <mat-icon class="icon">arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
     }
   </div>
-  <add-question/>
- 
+  <add-question />
 </div>
 <router-outlet />

@@ -8,6 +8,8 @@ import { QuestionsService } from './services/questions.service';
 import { AddQuestionComponent } from './components/add-question/add-question.component';
 import { Subscription } from 'rxjs';
 import { FilterCriteria } from './models/filter';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +22,8 @@ import { FilterCriteria } from './models/filter';
     NgClass,
     FilterComponent,
     AddQuestionComponent,
+    MatButtonModule,
+    MatIconModule,
   ],
 })
 export class AppComponent implements OnInit {
@@ -69,6 +73,31 @@ export class AppComponent implements OnInit {
         filters.tags.some((tag) => question.tags.includes(tag));
       return matchesType && matchesDifficulty && matchesTags;
     });
+  }
+
+  nextQuestion() {
+    if (this.selectedCard) {
+      let index = this.questions.indexOf(this.selectedCard);
+      if (index !== this.questions.length - 1) {
+        this.selectedCard = this.questions[index + 1];
+        this.handleSelectedCard(this.selectedCard);
+      } else {
+        this.selectedCard = this.questions[0];
+        this.handleSelectedCard(this.selectedCard);
+      }
+    }
+  }
+  prevQuestion() {
+    if (this.selectedCard) {
+      let index = this.questions.indexOf(this.selectedCard);
+      if (index !== 0) {
+        this.selectedCard = this.questions[index - 1];
+        this.handleSelectedCard(this.selectedCard);
+      } else {
+        this.selectedCard = this.questions[this.questions.length - 1];
+        this.handleSelectedCard(this.selectedCard);
+      }
+    }
   }
 
   ngOnDestroy(): void {
