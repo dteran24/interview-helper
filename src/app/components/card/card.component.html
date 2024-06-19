@@ -11,15 +11,12 @@
 </mat-card>
 }@else if (selectedQuestion) {
 <mat-card
-  class="card selectedCard"
-  [ngClass]="{
-      widthLarge: changeFormat,
-      widthSmall: !changeFormat,
-    }"
+  class="card selectedCard widthLarge"
   (click)="show()"
   ><mat-card-content>
+
     @if (selectedQuestion.selected) {
-    <p>{{ selectedQuestion.answer }}</p>
+    <p class="answerText">{{ selectedQuestion.answer }}</p>
     }@else {
     <p>{{ selectedQuestion.question }}</p>
     }

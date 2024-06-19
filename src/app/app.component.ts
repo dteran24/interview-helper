@@ -54,9 +54,9 @@ export class AppComponent implements OnInit {
   handleSelectedCard(selectedQuestion: Question) {
     this.selectedCard = selectedQuestion;
     this.changeFormat = true;
-    this.filteredList = this.questions.filter(
-      (question) => question.id !== selectedQuestion.id
-    );
+    // this.filteredList = this.questions.filter(
+    //   (question) => question.id !== selectedQuestion.id
+    // );
   }
 
   handleFilterChange(filters: FilterCriteria) {
@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
 
   nextQuestion() {
     if (this.selectedCard) {
+      this.selectedCard.selected = false;
       let index = this.questions.indexOf(this.selectedCard);
       if (index !== this.questions.length - 1) {
         this.selectedCard = this.questions[index + 1];
@@ -89,6 +90,7 @@ export class AppComponent implements OnInit {
   }
   prevQuestion() {
     if (this.selectedCard) {
+      this.selectedCard.selected = false;
       let index = this.questions.indexOf(this.selectedCard);
       if (index !== 0) {
         this.selectedCard = this.questions[index - 1];

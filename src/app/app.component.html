@@ -19,6 +19,7 @@
         [selectedQuestion]="selectedCard"
         [changeFormat]="changeFormat"
       />
+      @if (filteredList.length > 1) {
       <div class="buttonContainer">
         <button mat-icon-button aria-label="" (click)="prevQuestion()">
           <mat-icon class="icon">arrow_back</mat-icon>
@@ -27,6 +28,7 @@
           <mat-icon class="icon">arrow_forward</mat-icon>
         </button>
       </div>
+      }
     </div>
     }
   </div>

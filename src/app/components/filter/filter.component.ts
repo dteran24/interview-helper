@@ -9,7 +9,13 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'filter',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatMenuModule, MatCheckboxModule, CommonModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    CommonModule,
+  ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.sass',
 })
@@ -68,19 +74,30 @@ export class FilterComponent {
 
   emitFilterChange() {
     this.filterChanged.emit(this.filterCriteria);
-    console.log(this.filterCriteria);
   }
   objectKeys(obj: any) {
     return Object.keys(obj);
   }
   getObjectValueByKey(obj: any, key: string) {
-    console.log(obj[key]);
     return obj[key];
   }
 
   isAnyFilterActive(): boolean {
-    return this.filterCriteria.type !== '' || 
-           this.filterCriteria.difficulties.length > 0 || 
-           this.filterCriteria.tags.length > 0;
+    return (
+      this.filterCriteria.type !== '' ||
+      this.filterCriteria.difficulties.length > 0 ||
+      this.filterCriteria.tags.length > 0
+    );
+  }
+  removeFilter(key: string) {
+    if (key === 'type') {
+      this.filterCriteria.type = '';
+    }
+    if (key === 'difficulties') {
+      this.filterCriteria.difficulties = [];
+    } else {
+      this.filterCriteria.tags = [];
+    }
+    this.emitFilterChange();
   }
 }

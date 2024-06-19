@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Output, ViewChild } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,7 +9,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { QuestionsService } from '../../services/questions.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
   FormBuilder,
   FormControl,
@@ -17,9 +17,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { merge } from 'rxjs';
+import { merge, timeout } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Question } from '../../models/question';
+import { EventEmitter } from 'node:stream';
 @Component({
   selector: 'add-question',
   standalone: true,
@@ -35,13 +36,14 @@ import { Question } from '../../models/question';
     MatRadioModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
   ],
   templateUrl: './add-question.component.html',
   styleUrl: './add-question.component.sass',
 })
 export class AddQuestionComponent {
   displayForm = false;
+  @ViewChild('addQuestionForm') addQuestionForm: ElementRef | undefined;
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
   type = '';
@@ -78,11 +80,18 @@ export class AddQuestionComponent {
       this.answer.reset('');
       this.type = '';
       this.displayForm = false;
-      console.log(userQuestion)
     }
   }
   displayFormHandler() {
     this.displayForm = true;
+    setTimeout(() => {
+      if (this.addQuestionForm) {
+        this.addQuestionForm.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }, 0);
   }
   onCancel() {
     this.displayForm = false;

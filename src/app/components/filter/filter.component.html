@@ -51,7 +51,7 @@
     <div class="activeFilterContainer" [ngClass]="{'hidden': !isAnyFilterActive()}">
       @for (key of objectKeys(filterCriteria); track key) {
       @if(getObjectValueByKey(filterCriteria, key).length !== 0 ) {
-      <button mat-fab extended class="filterButton">
+      <button mat-fab extended class="filterButton" (click)="removeFilter(key)">
         {{ titleMap[key] }} <mat-icon>close</mat-icon>
       </button>
       } }
