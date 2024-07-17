@@ -1,0 +1,1 @@
+export const API_URL = "interview-helper.up.railway.app"

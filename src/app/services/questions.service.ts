@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Question } from '../models/question';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { API_URL } from '../const/constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestionsService {
+  constructor(private http: HttpClient){}
   private questionsSubject: Subject<Question[]> = new Subject<Question[]>();
   questions: Question[] = [
     new Question(
@@ -63,12 +66,13 @@ export class QuestionsService {
       false
     ),
   ];
-  constructor() { }
+  
+  
   getQuestionsObservable() {
     return this.questionsSubject.asObservable(); 
   }
-  getQuestions(): Question[] {
-    return this.questions;
+  getQuestions(): Observable<Question[]>{
+    return this.http.get<Question[]>(`${API_URL}/questions/all`);
   }
   addQuestion(question: Question) {
     this.questions.push(question);

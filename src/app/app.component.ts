@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { FilterCriteria } from './models/filter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
     AddQuestionComponent,
     MatButtonModule,
     MatIconModule,
+    HttpClientModule
   ],
 })
 export class AppComponent implements OnInit {
@@ -36,13 +38,12 @@ export class AppComponent implements OnInit {
 
   constructor(private questionService: QuestionsService) {}
   ngOnInit(): void {
-    this.questions = this.questionService.getQuestions();
-    this.filteredList = [...this.questions];
-
+   
     this.questionsSubscription = this.questionService
       .getQuestionsObservable()
       .subscribe((questions) => {
         this.questions = questions;
+        this.filteredList = [...this.questions];
         this.filteredList = this.applyFilters({
           type: '',
           difficulties: [],

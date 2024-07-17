@@ -5,12 +5,14 @@
       class="questionContainer"
       [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
     >
-      @for (item of filteredList; track item.id) {
+      @if (questions.length > 0) { @for (item of filteredList; track item.id) {
       <question-card
         [question]="item"
         (selectedCardData)="handleSelectedCard($event)"
         [changeFormat]="changeFormat"
       />
+      } }@else {
+        No Questions at this moment!
       }
     </div>
     @if (selectedCard) {
