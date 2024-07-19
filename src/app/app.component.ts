@@ -38,9 +38,8 @@ export class AppComponent implements OnInit {
 
   constructor(private questionService: QuestionsService) {}
   ngOnInit(): void {
-   
     this.questionsSubscription = this.questionService
-      .getQuestionsObservable()
+      .getQuestions()
       .subscribe((questions) => {
         this.questions = questions;
         this.filteredList = [...this.questions];
@@ -50,6 +49,7 @@ export class AppComponent implements OnInit {
           tags: [],
         });
       });
+    
   }
 
   handleSelectedCard(selectedQuestion: Question) {
@@ -65,20 +65,20 @@ export class AppComponent implements OnInit {
   }
   applyFilters(filters: FilterCriteria): Question[] {
     return this.questions.filter((question) => {
-      const matchesType = !filters.type || question.type === filters.type;
+      const matchesType = !filters.type || question.getType() === filters.type;
       const matchesDifficulty =
         !filters.difficulties.length ||
-        filters.difficulties.includes(question.difficulty);
+        filters.difficulties.includes(question.getDifficulty());
       const matchesTags =
         !filters.tags.length ||
-        filters.tags.some((tag) => question.tags.includes(tag));
+        filters.tags.some((tag) => question.getTags().includes(tag));
       return matchesType && matchesDifficulty && matchesTags;
     });
   }
 
   nextQuestion() {
     if (this.selectedCard) {
-      this.selectedCard.selected = false;
+      this.selectedCard.setSelected(false);
       let index = this.questions.indexOf(this.selectedCard);
       if (index !== this.questions.length - 1) {
         this.selectedCard = this.questions[index + 1];
@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
   }
   prevQuestion() {
     if (this.selectedCard) {
-      this.selectedCard.selected = false;
+      this.selectedCard.setSelected(false);
       let index = this.questions.indexOf(this.selectedCard);
       if (index !== 0) {
         this.selectedCard = this.questions[index - 1];

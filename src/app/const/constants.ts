@@ -1,1 +1,1 @@
-export const API_URL = "interview-helper.up.railway.app"
+export const API_URL = "https://interview-helper.up.railway.app"

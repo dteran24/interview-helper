@@ -7,7 +7,7 @@
     }"
   (click)="[selectItem()]"
 >
-  <mat-card-content>{{ question.question }}</mat-card-content>
+  <mat-card-content>{{ question.getQuestion() }}</mat-card-content>
 </mat-card>
 }@else if (selectedQuestion) {
 <mat-card
@@ -15,10 +15,10 @@
   (click)="show()"
   ><mat-card-content>
 
-    @if (selectedQuestion.selected) {
-    <p class="answerText">{{ selectedQuestion.answer }}</p>
+    @if (selectedQuestion.isSelected()) {
+    <p class="answerText">{{ selectedQuestion.getAnswer() }}</p>
     }@else {
-    <p>{{ selectedQuestion.question }}</p>
+    <p>{{ selectedQuestion.getQuestion() }}</p>
     }
   </mat-card-content>
 </mat-card>

@@ -19,7 +19,7 @@ import {
 } from '@angular/forms';
 import { merge, timeout } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Question } from '../../models/question';
+import { Question, QuestionDTO } from '../../models/question';
 import { EventEmitter } from 'node:stream';
 @Component({
   selector: 'add-question',
@@ -65,23 +65,29 @@ export class AddQuestionComponent {
   }
 
   onsubmit() {
-    if ((this.question.value, this.answer.value)) {
-      let userQuestion = new Question(
-        4,
-        this.question.value!,
-        this.answer.value!,
-        this.type,
-        this.tags,
-        this.difficulty,
-        false
-      );
-      this.questionsService.addQuestion(userQuestion);
-      this.question.reset('');
-      this.answer.reset('');
-      this.type = '';
-      this.displayForm = false;
+    if (this.question.value && this.answer.value) {
+      // Create a QuestionDTO object
+      let userQuestion: QuestionDTO = {
+        question: this.question.value,
+        answer: this.answer.value,
+        type: this.type,
+        tags: this.tags,
+        difficulty: this.difficulty,
+        selected: false,
+      };
+      // Call the service to add the question
+      this.questionsService.addQuestion(userQuestion).subscribe(() => {
+        // Reset the form fields after successful submission
+        this.question.reset();
+        this.answer.reset();
+        this.type = '';
+        this.tags = [];
+        this.difficulty = '';
+        this.displayForm = false;
+      });
     }
   }
+
   displayFormHandler() {
     this.displayForm = true;
     setTimeout(() => {

@@ -1,27 +1,39 @@
 <div class="appContainer">
-  <filter (filterChanged)="handleFilterChange($event)" />
+  @if (questions.length) {
+    <filter
+    (filterChanged)="handleFilterChange($event)"
+  />}
+
   <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
     <div
       class="questionContainer"
       [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
     >
-      @if (questions.length > 0) { @for (item of filteredList; track item.id) {
+      @if (questions.length ) { @for (item of filteredList; track item.getId())
+      {
       <question-card
         [question]="item"
         (selectedCardData)="handleSelectedCard($event)"
         [changeFormat]="changeFormat"
       />
-      } }@else {
-        No Questions at this moment!
-      }
+      } }
     </div>
-    @if (selectedCard) {
+    @if(!questions.length) {
+    <div class="imageContainer">
+      <img
+        class="image"
+        src="assets/images/empty_data.jpg"
+        alt="Example Image"
+      />
+      <span>No Questions at this moment!</span>
+    </div>
+    } @if (selectedCard) {
     <div class="selectedCardContainer">
       <question-card
         [selectedQuestion]="selectedCard"
         [changeFormat]="changeFormat"
       />
-      @if (filteredList.length > 1) {
+      @if (filteredList.length) {
       <div class="buttonContainer">
         <button mat-icon-button aria-label="" (click)="prevQuestion()">
           <mat-icon class="icon">arrow_back</mat-icon>
