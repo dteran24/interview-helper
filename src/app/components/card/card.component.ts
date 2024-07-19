@@ -23,12 +23,12 @@ export class CardComponent {
   }
   show() {
     if (this.selectedQuestion) {
-      this.selectedQuestion.setSelected(!this.selectedQuestion.isSelected()) 
+      this.selectedQuestion.selected = !this.selectedQuestion.selected
     }
   }
   resetShowAnswer() {
     if (this.question) {
-      this.question.setSelected(false)
+      this.question.selected = false;
     }
   }
 }
