@@ -25,7 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     AddQuestionComponent,
     MatButtonModule,
     MatIconModule,
-    HttpClientModule
+    HttpClientModule,
   ],
 })
 export class AppComponent implements OnInit {
@@ -33,22 +33,40 @@ export class AppComponent implements OnInit {
   filteredList: Question[] = [];
   changeFormat = false;
   selectedCard?: Question;
+  loading: boolean = false;
 
   private questionsSubscription!: Subscription;
+  private loadingSubscription!: Subscription;
 
   constructor(private questionService: QuestionsService) {}
   ngOnInit(): void {
-    this.questionsSubscription = this.questionService
-      .getQuestions()
-      .subscribe((questions) => {
+    // Trigger the initial fetch
+    this.questionService.getQuestions().subscribe();
+
+    // Fetch initial questions and subscribe to updates
+    this.questionsSubscription = this.questionService.questions$.subscribe({
+      next: (questions) => {
         this.questions = questions;
-        this.filteredList = [...this.questions];
         this.filteredList = this.applyFilters({
           type: '',
           difficulties: [],
           tags: [],
         });
-      });
+      },
+      error: (error) => {
+        console.error('Error fetching questions', error);
+      },
+    });
+
+    // Optional: Subscribe to loading state
+    this.loadingSubscription = this.questionService.loading$.subscribe(
+      (isLoading) => {
+        console.log('Loading state:', isLoading);
+        this.loading = isLoading;
+      }
+    );
+
+    
   }
 
   handleSelectedCard(selectedQuestion: Question) {
@@ -103,6 +121,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.questionsSubscription.unsubscribe();
+    if (this.questionsSubscription) {
+      this.questionsSubscription.unsubscribe();
+    }
+    if (this.loadingSubscription) {
+      this.loadingSubscription.unsubscribe();
+    }
   }
 }
