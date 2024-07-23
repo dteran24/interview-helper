@@ -1,5 +1,7 @@
 .card
-    text-align: center
+    display: flex
+    justify-content: center
+    align-items: center
     margin: 1rem 0
     padding: 1rem
     border: none
@@ -14,11 +16,19 @@
     font-size: 2rem
     font-weight: 500
     padding: 1rem
-.widthLarge 
+.widthLarge
     width: 36rem
-    
+
 .widthSmall
     width: 16rem
     min-height: 8rem
 .answerText
     font-size: 1rem
+
+.mat-card-content
+    flex-grow: 1
+    overflow: auto
+.actions
+    text-align: right
+    width: 100%
+    

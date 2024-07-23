@@ -39,8 +39,8 @@
       name="type"
       required
     >
-      <mat-radio-button value="Technical">Technical</mat-radio-button>
-      <mat-radio-button value="Behavioral">Behavioral</mat-radio-button>
+      <mat-radio-button value="technical">Technical</mat-radio-button>
+      <mat-radio-button value="behavioral">Behavioral</mat-radio-button>
     </mat-radio-group>
   </div>
   <div class="tagContainer">
@@ -57,7 +57,7 @@
       aria-label="difficulty"
     >
       @for (diff of difficultyList; track $index) {
-      <mat-button-toggle value="diff">{{ diff }}</mat-button-toggle>
+      <mat-button-toggle [value]="diff">{{ diff }}</mat-button-toggle>
 
       }
     </mat-button-toggle-group>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Question } from './models/question';
 import { CardComponent } from './components/card/card.component';
@@ -11,6 +11,7 @@ import { FilterCriteria } from './models/filter';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     AddQuestionComponent,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     HttpClientModule,
   ],
 })
@@ -34,6 +36,7 @@ export class AppComponent implements OnInit {
   changeFormat = false;
   selectedCard?: Question;
   loading: boolean = false;
+  deleteMode: boolean = false;
 
   private questionsSubscription!: Subscription;
   private loadingSubscription!: Subscription;
@@ -61,7 +64,6 @@ export class AppComponent implements OnInit {
     // Optional: Subscribe to loading state
     this.loadingSubscription = this.questionService.loading$.subscribe(
       (isLoading) => {
-        console.log('Loading state:', isLoading);
         this.loading = isLoading;
       }
     );
@@ -119,7 +121,12 @@ export class AppComponent implements OnInit {
       }
     }
   }
-
+  turnOnDelete() {
+    this.deleteMode = true;
+  }
+  turnOffDelete() {
+    this.deleteMode = false;
+  }
   ngOnDestroy(): void {
     if (this.questionsSubscription) {
       this.questionsSubscription.unsubscribe();

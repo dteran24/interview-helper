@@ -7,18 +7,27 @@
     }"
   (click)="[selectItem()]"
 >
-  <mat-card-content>{{ question.question}}</mat-card-content>
+  @if (deleteMode) {
+  <div class="actions">
+    <button
+      mat-icon-button
+      aria-label="Example icon button with a vertical three dot icon"
+      (click)="deleteCard()"
+    >
+      <mat-icon style="color: red;">delete</mat-icon>
+    </button>
+  </div>
+  }
+
+  <mat-card-content> {{ question.question }}</mat-card-content>
 </mat-card>
 }@else if (selectedQuestion) {
-<mat-card
-  class="card selectedCard widthLarge"
-  (click)="show()"
+<mat-card class="card selectedCard widthLarge" (click)="show()"
   ><mat-card-content>
-
     @if (selectedQuestion.selected) {
     <p class="answerText">{{ selectedQuestion.answer }}</p>
     }@else {
-    <p>{{ selectedQuestion.question}}</p>
+    <p>{{ selectedQuestion.question }}</p>
     }
   </mat-card-content>
 </mat-card>

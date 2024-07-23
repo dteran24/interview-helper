@@ -3,17 +3,37 @@
   <filter (filterChanged)="handleFilterChange($event)" />}
 
   <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
-    <div
-      class="questionContainer"
-      [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
-    >
-      @if (questions.length ) { @for (item of filteredList; track item.id) {
-      <question-card
-        [question]="item"
-        (selectedCardData)="handleSelectedCard($event)"
-        [changeFormat]="changeFormat"
-      />
-      } }
+    <div>
+      <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
+        @if (filteredList.length) {
+        <button mat-button class="menuButton" [matMenuTriggerFor]="typeMenu">
+          <mat-icon class="moreIcon">more_vert</mat-icon>
+        </button>
+
+        <mat-menu #typeMenu="matMenu" class="dropdown">
+          @if (deleteMode) {
+          <button mat-menu-item (click)="turnOffDelete()">Cancel</button>
+          }@else {
+          <button mat-menu-item (click)="turnOnDelete()">Delete</button>}
+        </mat-menu>
+        }
+      </div>
+      <div
+        class="questionContainer"
+        [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
+      >
+        @if (filteredList.length ) { @for (item of filteredList; track item.id)
+        {
+        <question-card
+          [question]="item"
+          (selectedCardData)="handleSelectedCard($event)"
+          [changeFormat]="changeFormat"
+          [deleteMode]="deleteMode"
+        />
+        }@empty {
+        <span>There are no results!</span>
+        } }
+      </div>
     </div>
     @if(!questions.length) {
     <div class="imageContainer">
