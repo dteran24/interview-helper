@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
     if (!this.filteredList.includes(deletedQuestion) || this.filteredList.length === 0) {
       this.selectedCard = undefined;
       this.changeFormat = false;
+      this.deleteMode = false;
     }
   }
 
