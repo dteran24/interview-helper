@@ -87,6 +87,7 @@ export class AppComponent implements OnInit {
     this.filteredList = this.applyFilters(filters);
     this.selectedCard = undefined;
     this.changeFormat = false;
+    console.log(this.filteredList.length)
   }
   applyFilters(filters: FilterCriteria): Question[] {
     return this.questions.filter((question) => {
