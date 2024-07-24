@@ -2,7 +2,7 @@
   @if (questions.length) {
   <filter (filterChanged)="handleFilterChange($event)" />}
 
-  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
+  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat}">
     <div>
       <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
         @if (filteredList.length) {
@@ -14,7 +14,7 @@
           @if (deleteMode) {
           <button mat-menu-item (click)="turnOffDelete()">Cancel</button>
           }@else {
-          <button mat-menu-item (click)="turnOnDelete()">Delete</button>}
+          <button mat-menu-item (click)="turnOnDelete()">Edit</button>}
         </mat-menu>
         }
       </div>
@@ -28,6 +28,7 @@
           [question]="item"
           (selectedCardData)="handleSelectedCard($event)"
           [changeFormat]="changeFormat"
+          (cardDeleted)="handleCardDeleted($event)"
           [deleteMode]="deleteMode"
         />
         }@empty {

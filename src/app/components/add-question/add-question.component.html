@@ -57,7 +57,7 @@
       aria-label="difficulty"
     >
       @for (diff of difficultyList; track $index) {
-      <mat-button-toggle [value]="diff">{{ diff }}</mat-button-toggle>
+      <mat-button-toggle [value]="diff.toLowerCase()">{{ diff }}</mat-button-toggle>
 
       }
     </mat-button-toggle-group>

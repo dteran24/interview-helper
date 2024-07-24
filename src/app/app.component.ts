@@ -67,8 +67,6 @@ export class AppComponent implements OnInit {
         this.loading = isLoading;
       }
     );
-
-    
   }
 
   handleSelectedCard(selectedQuestion: Question) {
@@ -78,9 +76,17 @@ export class AppComponent implements OnInit {
     //   (question) => question.id !== selectedQuestion.id
     // );
   }
+  handleCardDeleted(deletedQuestion: Question) {
+    if (!this.filteredList.includes(deletedQuestion) || this.filteredList.length === 0) {
+      this.selectedCard = undefined;
+      this.changeFormat = false;
+    }
+  }
 
   handleFilterChange(filters: FilterCriteria) {
     this.filteredList = this.applyFilters(filters);
+    this.selectedCard = undefined;
+    this.changeFormat = false;
   }
   applyFilters(filters: FilterCriteria): Question[] {
     return this.questions.filter((question) => {
@@ -127,6 +133,7 @@ export class AppComponent implements OnInit {
   turnOffDelete() {
     this.deleteMode = false;
   }
+
   ngOnDestroy(): void {
     if (this.questionsSubscription) {
       this.questionsSubscription.unsubscribe();

@@ -61,6 +61,7 @@ export class FilterComponent {
   }
 
   changeTag(event: any, tag: string) {
+    tag = tag.toLowerCase();
     if (event.checked) {
       this.filterCriteria.tags.push(tag);
     } else {
@@ -100,4 +101,5 @@ export class FilterComponent {
     }
     this.emitFilterChange();
   }
+  
 }

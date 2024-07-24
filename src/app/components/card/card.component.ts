@@ -20,6 +20,7 @@ export class CardComponent {
   @Input() deleteMode?: boolean = false;
 
   @Output() selectedCardData = new EventEmitter<Question>();
+  @Output() cardDeleted = new EventEmitter<Question>();
   constructor(private questionService: QuestionsService) {
   }
 
@@ -44,6 +45,7 @@ export class CardComponent {
         next: () => {
           console.log('Question deleted successfully');
           this.deleteMode = false;
+          this.cardDeleted.emit(this.question);
         },
         error: (error) => {
           console.error('Failed to delete question', error);

@@ -28,6 +28,7 @@
       <mat-menu #diffMenu="matMenu">
         @for (difficulty of difficultyList; track $index) {
         <mat-checkbox
+        [checked]="filterCriteria.difficulties.includes(difficulty.toLowerCase())"
           (change)="changeDifficulty($event, difficulty)"
           (click)="$event.stopPropagation()"
           >{{ difficulty }}</mat-checkbox
@@ -41,6 +42,7 @@
       <mat-menu #tagMenu="matMenu">
         @for (tag of tagList; track $index) {
         <mat-checkbox
+          [checked]="filterCriteria.tags.includes(tag.toLowerCase())"
           (change)="changeTag($event, tag)"
           (click)="$event.stopPropagation()"
           >{{ tag }}</mat-checkbox
