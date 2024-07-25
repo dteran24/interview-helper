@@ -18,7 +18,7 @@ export class CardComponent {
   @Input() changeFormat!: boolean;
   @Input() question?: Question;
   @Input() selectedQuestion?: Question;
-  @Input() deleteMode?: boolean = false;
+  @Input() editMode?: boolean = false;
   //send data to pare component
   @Output() selectedCardData = new EventEmitter<Question>();
   @Output() cardDeleted = new EventEmitter<Question>();

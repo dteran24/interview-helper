@@ -11,7 +11,7 @@
         </button>
 
         <mat-menu #typeMenu="matMenu" class="dropdown">
-          @if (deleteMode) {
+          @if (editMode) {
           <button mat-menu-item (click)="turnOffDelete()">Cancel</button>
           }@else {
           <button mat-menu-item (click)="turnOnDelete()">Edit</button>}
@@ -29,7 +29,7 @@
           (selectedCardData)="handleSelectedCard($event)"
           [changeFormat]="changeFormat"
           (cardDeleted)="handleCardDeleted($event)"
-          [deleteMode]="deleteMode"
+          [editMode]="editMode"
         />
         }
       </div>

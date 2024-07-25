@@ -7,7 +7,7 @@
     }"
   (click)="[selectItem()]"
 >
-  @if (deleteMode) {
+  @if (editMode) {
   <div class="actions">
     <button
       mat-icon-button
@@ -16,6 +16,13 @@
     >
       <mat-icon style="color: red;">delete</mat-icon>
     </button>
+    <button
+    mat-icon-button
+    aria-label="Example icon button with a vertical three dot icon"
+    (click)="deleteCard($event)"
+  >
+    <mat-icon style="color: rgb(255, 187, 0);">edit</mat-icon>
+  </button>
   </div>
   }
 

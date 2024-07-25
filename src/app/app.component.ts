@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
   changeFormat = false;
   selectedCard?: Question;
   loading: boolean = false;
-  deleteMode: boolean = false;
+  editMode: boolean = false;
 
   private questionsSubscription!: Subscription;
   private loadingSubscription!: Subscription;
@@ -84,11 +84,11 @@ export class AppComponent implements OnInit {
       this.selectedCard = undefined;
       this.changeFormat = false;
     }
-    this.deleteMode = false;
+    this.editMode = false;
   }
   handleOpenForm(isShown: boolean) {
     if (isShown) {
-      this.deleteMode = false;
+      this.editMode = false;
     }
   }
 
@@ -138,10 +138,10 @@ export class AppComponent implements OnInit {
     }
   }
   turnOnDelete() {
-    this.deleteMode = true;
+    this.editMode = true;
   }
   turnOffDelete() {
-    this.deleteMode = false;
+    this.editMode = false;
   }
 
   ngOnDestroy(): void {
