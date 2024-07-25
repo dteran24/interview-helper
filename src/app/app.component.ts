@@ -77,9 +77,17 @@ export class AppComponent implements OnInit {
     // );
   }
   handleCardDeleted(deletedQuestion: Question) {
-    if (!this.filteredList.includes(deletedQuestion) || this.filteredList.length === 0) {
+    if (
+      this.filteredList.length === 0 ||
+      deletedQuestion.id === this.selectedCard?.id
+    ) {
       this.selectedCard = undefined;
       this.changeFormat = false;
+    }
+    this.deleteMode = false;
+  }
+  handleOpenForm(isShown: boolean) {
+    if (isShown) {
       this.deleteMode = false;
     }
   }
@@ -88,7 +96,7 @@ export class AppComponent implements OnInit {
     this.filteredList = this.applyFilters(filters);
     this.selectedCard = undefined;
     this.changeFormat = false;
-    console.log(this.filteredList.length)
+    console.log(this.filteredList.length);
   }
   applyFilters(filters: FilterCriteria): Question[] {
     return this.questions.filter((question) => {

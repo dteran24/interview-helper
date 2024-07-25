@@ -1,4 +1,4 @@
-import { Component, ElementRef, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Output, ViewChild, EventEmitter } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,16 +11,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import {
-  FormBuilder,
   FormControl,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { merge, timeout } from 'rxjs';
+import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Question, QuestionDTO } from '../../models/question';
-import { EventEmitter } from 'node:stream';
+import { QuestionDTO } from '../../models/question';
+
 @Component({
   selector: 'add-question',
   standalone: true,
@@ -42,7 +41,8 @@ import { EventEmitter } from 'node:stream';
   styleUrl: './add-question.component.sass',
 })
 export class AddQuestionComponent {
-  displayForm = false;
+
+
   @ViewChild('addQuestionForm') addQuestionForm: ElementRef | undefined;
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
@@ -52,6 +52,9 @@ export class AddQuestionComponent {
   errorMessage = '';
   tagList = ['Java', 'JavaScript', 'React', 'Spring Boot', 'Angular'];
   difficultyList = ['Easy', 'Medium', 'Hard'];
+  @Output() isShown = new EventEmitter<boolean>();
+  displayForm = false;
+ 
 
   constructor(private questionsService: QuestionsService) {
     merge(
@@ -87,9 +90,12 @@ export class AddQuestionComponent {
       });
     }
   }
-
+  emitIsShown() {
+    this.isShown.emit(this.displayForm);
+  }
   displayFormHandler() {
     this.displayForm = true;
+    this.emitIsShown()
     setTimeout(() => {
       if (this.addQuestionForm) {
         this.addQuestionForm.nativeElement.scrollIntoView({
@@ -101,6 +107,7 @@ export class AddQuestionComponent {
   }
   onCancel() {
     this.displayForm = false;
+    this.emitIsShown()
   }
 
   onTagChange(event: any, tag: string) {

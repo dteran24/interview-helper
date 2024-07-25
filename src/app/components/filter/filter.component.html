@@ -65,7 +65,7 @@
     </button>
     <mat-menu #sortMenu="matMenu">
       @for (sort of sortList; track $index) {
-      <button mat-menu-item (click)="$event.stopPropagation()">
+      <button mat-button disabled (click)="$event.stopPropagation()">
         <span>{{ sort }}</span>
       </button>
       }

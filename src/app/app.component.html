@@ -1,6 +1,6 @@
 <div class="appContainer">
   @if (questions.length) {
-  <filter (filterChanged)="handleFilterChange($event)" />}
+  <filter (filterChanged)="handleFilterChange($event)"/>}
 
   <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
     <div>
@@ -66,6 +66,6 @@
     </div>
     }
   </div>
-  <add-question />
+  <add-question (isShown)="handleOpenForm($event)"/>
 </div>
 <router-outlet />
