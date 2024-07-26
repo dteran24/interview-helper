@@ -8,7 +8,7 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../const/constants';
 
 @Injectable({
@@ -79,6 +79,38 @@ export class QuestionsService {
           error: (error) => {
             console.error('Failed to remove question', error);
             return throwError(() => new Error('Failed to remove question'));
+          },
+        })
+      );
+  }
+
+  editQuestion(editQuestion: Question): Observable<string> {
+    return this.http
+      .patch<string>(
+        `${API_URL}/questions/update/${editQuestion.id}`,
+        editQuestion,
+        {
+          responseType: 'text' as 'json',
+        }
+      )
+      .pipe(
+        tap({
+          next: () => {
+            const currentQuestions = this.questionsSubject.value;
+            const index = currentQuestions.findIndex(
+              (q) => q.id === editQuestion.id
+            );
+            if (index !== -1) {
+              currentQuestions[index] = {
+                ...currentQuestions[index],
+                ...editQuestion,
+              };
+              this.questionsSubject.next(currentQuestions);
+            }
+          },
+          error: (error) => {
+            console.error('Failed to edit question', error);
+            return throwError(() => new Error('Failed to edit'));
           },
         })
       );

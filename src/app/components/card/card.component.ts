@@ -1,4 +1,12 @@
-import { Component, EventEmitter, inject, input, Input, Output, output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  input,
+  Input,
+  Output,
+  output,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Question } from '../../models/question';
 import { NgClass } from '@angular/common';
@@ -11,7 +19,7 @@ import { ModalComponent } from '../modal/modal.component';
 @Component({
   selector: 'question-card',
   standalone: true,
-  imports: [NgClass, MatCardModule, MatIconModule,MatButtonModule],
+  imports: [NgClass, MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.sass',
 })
@@ -25,34 +33,30 @@ export class CardComponent {
   //send data to pare component
   @Output() selectedCardData = new EventEmitter<Question>();
   @Output() cardDeleted = new EventEmitter<Question>();
-  readonly dialog = inject(MatDialog);
-  constructor(private questionService: QuestionsService) {}
+  @Output() cardUpdated = new EventEmitter<Question>();
 
+  constructor(
+    private questionService: QuestionsService,
+    private dialog: MatDialog
+  ) {}
+  //open dialog with existing data
   openDialog(question: Question): void {
     const dialogRef = this.dialog.open(ModalComponent, {
-      data: {
-        id: question.id,
-        question: question.question,
-        answer: question.answer,
-        type: question.type,
-        tags: question.tags,
-        difficulty: question.difficulty,
-        selected: question.selected,
-      },
+      data: question,
     });
+  //notify parent component if update complete
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        console.log(result);
+      if (result.success) {
+        this.cardUpdated.emit(result.question);
       }
     });
   }
-
+//if card is selected it is main
   selectItem() {
     this.selectedCardData.emit(this.question);
     this.resetShowAnswer();
   }
-
+//toggle display answer or question
   show() {
     if (this.selectedQuestion) {
       this.selectedQuestion.selected = !this.selectedQuestion.selected;

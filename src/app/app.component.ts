@@ -37,6 +37,7 @@ export class AppComponent implements OnInit {
   selectedCard?: Question;
   loading: boolean = false;
   editMode: boolean = false;
+  hideList: boolean = false;
 
   private questionsSubscription!: Subscription;
   private loadingSubscription!: Subscription;
@@ -68,37 +69,44 @@ export class AppComponent implements OnInit {
       }
     );
   }
-
+//if card is selected change format, show question
   handleSelectedCard(selectedQuestion: Question) {
     this.selectedCard = selectedQuestion;
     this.selectedCard.selected = false;
     this.changeFormat = true;
-    // this.filteredList = this.questions.filter(
-    //   (question) => question.id !== selectedQuestion.id
-    // );
   }
+//if deleted card is selectedQuestion then next question is selected
   handleCardDeleted(deletedQuestion: Question) {
     if (
-      this.filteredList.length === 0 ||
-      deletedQuestion.id === this.selectedCard?.id
+      this.filteredList.length === 0
     ) {
       this.selectedCard = undefined;
       this.changeFormat = false;
+    } if (deletedQuestion.id === this.selectedCard?.id) {
+      this.nextQuestion();
     }
     this.editMode = false;
   }
+  //if updated card is selectedQuestion make updated card selectedQuestion
+  handleEditMode(updatedQuestion: Question) {
+    if (updatedQuestion && updatedQuestion.id === this.selectedCard?.id) {
+      this.selectedCard = updatedQuestion;
+      this.editMode = false;
+    }
+  }
+  //if form is opened remove edit mode
   handleOpenForm(isShown: boolean) {
     if (isShown) {
       this.editMode = false;
     }
   }
-
+//when filters are added reset selectedQuestin and change format
   handleFilterChange(filters: FilterCriteria) {
     this.filteredList = this.applyFilters(filters);
     this.selectedCard = undefined;
     this.changeFormat = false;
-    console.log(this.filteredList.length);
   }
+
   applyFilters(filters: FilterCriteria): Question[] {
     return this.questions.filter((question) => {
       const matchesType = !filters.type || question.type === filters.type;
@@ -138,11 +146,14 @@ export class AppComponent implements OnInit {
       }
     }
   }
-  turnOnDelete() {
+  turnOnEdit() {
     this.editMode = true;
   }
-  turnOffDelete() {
+  turnOffEdit() {
     this.editMode = false;
+  }
+  hideListOn() {
+    this.hideList = true;
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, inject, model, Output } from '@angular/core';
+import { Component, Inject, NgZone } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -11,7 +11,13 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Question } from '../../models/question';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { QuestionsService } from '../../services/questions.service';
 
 @Component({
   selector: 'app-modal',
@@ -23,6 +29,7 @@ import { FormsModule } from '@angular/forms';
     MatDialogActions,
     MatDialogClose,
     FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
   ],
@@ -30,20 +37,43 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './modal.component.sass',
 })
 export class ModalComponent {
-  readonly dialogRef = inject(MatDialogRef<ModalComponent>);
-  @Output() modalClosed = new EventEmitter<boolean>();
+  editForm: FormGroup;
+  didUpdate = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: Question
-  ) { }
-  
-  emitModalClosed() {
-    this.modalClosed.emit(true)
+    public data: Question,
+    private dialogRef: MatDialogRef<ModalComponent>,
+    private questionService: QuestionsService,
+    private fb: FormBuilder,
+  ) {
+    this.editForm = this.fb.group({
+      question: [data.question],
+      answer: [data.answer],
+    });
+  }
+  //grab data from form and add to existing data
+  editQuestion() {
+    const updatedQuestion: Question = {
+      ...this.data,
+      question: this.editForm.value.question,
+      answer: this.editForm.value.answer,
+    };
+
+    this.questionService.editQuestion(updatedQuestion).subscribe({
+      next: () => {
+        this.didUpdate = true;
+        this.dialogRef.close({ success: this.didUpdate, question: updatedQuestion });
+      },
+      error: (error) => {
+        console.error("could not update", error);
+        this.didUpdate = false;
+        this.dialogRef.close({ success: this.didUpdate });
+      },
+    });
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
-    this.emitModalClosed();
+    this.dialogRef.close({ success: this.didUpdate });
   }
 }
