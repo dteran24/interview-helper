@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, output } from '@angular/core';
+import { Component, EventEmitter, inject, input, Input, Output, output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Question } from '../../models/question';
 import { NgClass } from '@angular/common';
@@ -21,6 +21,7 @@ export class CardComponent {
   @Input() question?: Question;
   @Input() selectedQuestion?: Question;
   @Input() editMode?: boolean = false;
+  @Input() nextSelected?: boolean = false;
   //send data to pare component
   @Output() selectedCardData = new EventEmitter<Question>();
   @Output() cardDeleted = new EventEmitter<Question>();
