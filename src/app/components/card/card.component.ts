@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output, output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, output } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Question } from '../../models/question';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { QuestionsService } from '../../services/questions.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'question-card',
@@ -22,9 +24,28 @@ export class CardComponent {
   //send data to pare component
   @Output() selectedCardData = new EventEmitter<Question>();
   @Output() cardDeleted = new EventEmitter<Question>();
-  constructor(private questionService: QuestionsService) {
-  }
+  readonly dialog = inject(MatDialog);
+  constructor(private questionService: QuestionsService) {}
 
+  openDialog(question: Question): void {
+    const dialogRef = this.dialog.open(ModalComponent, {
+      data: {
+        id: question.id,
+        question: question.question,
+        answer: question.answer,
+        type: question.type,
+        tags: question.tags,
+        difficulty: question.difficulty,
+        selected: question.selected,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        console.log(result);
+      }
+    });
+  }
 
   selectItem() {
     this.selectedCardData.emit(this.question);

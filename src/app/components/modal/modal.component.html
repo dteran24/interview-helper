@@ -1,1 +1,15 @@
-<p>modal works!</p>
+<h2 mat-dialog-title>Edit Question</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Question</mat-label>
+    <input matInput [value]="data.question" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Answer</mat-label>
+    <input matInput [value]="data.answer" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <!-- <button mat-button [mat-dialog-close]="animal()" cdkFocusInitial>Ok</button> -->
+</mat-dialog-actions>
