@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import { MatMenuModule } from '@angular/material/menu';
+import { SettingsService } from './services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -42,7 +43,10 @@ export class AppComponent implements OnInit {
   private questionsSubscription!: Subscription;
   private loadingSubscription!: Subscription;
 
-  constructor(private questionService: QuestionsService) {}
+  constructor(
+    private questionService: QuestionsService,
+    private settingsService: SettingsService
+  ) {}
   ngOnInit(): void {
     // Trigger the initial fetch
     this.questionService.getQuestions().subscribe();
@@ -56,6 +60,10 @@ export class AppComponent implements OnInit {
           difficulties: [],
           tags: [],
         });
+        // const hideListLocalStorage = this.settingsService.getItem('hideList');
+        // if (hideListLocalStorage !== null) {
+        //   this.hideList = JSON.parse(hideListLocalStorage);
+        // }
       },
       error: (error) => {
         console.error('Error fetching questions', error);
@@ -69,20 +77,19 @@ export class AppComponent implements OnInit {
       }
     );
   }
-//if card is selected change format, show question
+  //if card is selected change format, show question
   handleSelectedCard(selectedQuestion: Question) {
     this.selectedCard = selectedQuestion;
     this.selectedCard.selected = false;
     this.changeFormat = true;
   }
-//if deleted card is selectedQuestion then next question is selected
+  //if deleted card is selectedQuestion then next question is selected
   handleCardDeleted(deletedQuestion: Question) {
-    if (
-      this.filteredList.length === 0
-    ) {
+    if (this.filteredList.length === 0) {
       this.selectedCard = undefined;
       this.changeFormat = false;
-    } if (deletedQuestion.id === this.selectedCard?.id) {
+    }
+    if (deletedQuestion.id === this.selectedCard?.id) {
       this.nextQuestion();
     }
     this.editMode = false;
@@ -100,10 +107,11 @@ export class AppComponent implements OnInit {
       this.editMode = false;
     }
   }
-//when filters are added reset selectedQuestin and change format
+  //when filters are added reset selectedQuestin and change format
   handleFilterChange(filters: FilterCriteria) {
     this.filteredList = this.applyFilters(filters);
     this.selectedCard = undefined;
+    this.hideListOff();
     this.changeFormat = false;
   }
 
@@ -154,9 +162,11 @@ export class AppComponent implements OnInit {
   }
   hideListOn() {
     this.hideList = true;
+    // this.settingsService.setItem('hideList', JSON.stringify(this.hideList));
   }
   hideListOff() {
     this.hideList = false;
+    // this.settingsService.setItem('hideList', JSON.stringify(this.hideList));
   }
 
   ngOnDestroy(): void {

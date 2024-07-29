@@ -2,7 +2,9 @@
   @if (questions.length) {
   <filter (filterChanged)="handleFilterChange($event)" />}
 
-  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat, center: hideList }">
+  <div
+    [ngClass]="{ flex: changeFormat, noFlex: !changeFormat, center: hideList }"
+  >
     <div>
       <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
         @if (filteredList.length) {
@@ -11,13 +13,14 @@
         </button>
 
         <mat-menu #typeMenu="matMenu" class="dropdown">
-          @if (editMode) {
+          @if (hideList) {
+          <button mat-menu-item (click)="hideListOff()">Show</button>
+          }@else if (editMode) {
           <button mat-menu-item (click)="turnOffEdit()">Cancel</button>
           }@else {
           <button mat-menu-item (click)="turnOnEdit()">Edit</button>
-          @if (hideList) {
-          <button mat-menu-item (click)="hideListOff()">Show</button>
-          }@else { <button mat-menu-item (click)="hideListOn()">Hide</button>} }
+          <button mat-menu-item (click)="hideListOn()">Hide</button>
+          }
         </mat-menu>
         }
       </div>
@@ -41,7 +44,9 @@
         } }
       </div>
       }@else if(!filteredList.length && questions.length) {
-      <span>There are no results!</span>
+      <div class="noResultsContainer">
+        <span>There are no results!</span>
+      </div>
       }
     </div>
     @if(!questions.length) {
