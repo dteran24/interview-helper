@@ -1,4 +1,10 @@
-import { Component, ElementRef, Output, ViewChild, EventEmitter } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Output,
+  ViewChild,
+  EventEmitter,
+} from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -41,8 +47,6 @@ import { QuestionDTO } from '../../models/question';
   styleUrl: './add-question.component.sass',
 })
 export class AddQuestionComponent {
-
-
   @ViewChild('addQuestionForm') addQuestionForm: ElementRef | undefined;
   question = new FormControl('', Validators.required);
   answer = new FormControl('', Validators.required);
@@ -54,7 +58,6 @@ export class AddQuestionComponent {
   difficultyList = ['Easy', 'Medium', 'Hard'];
   @Output() isShown = new EventEmitter<boolean>();
   displayForm = false;
- 
 
   constructor(private questionsService: QuestionsService) {
     merge(
@@ -79,14 +82,19 @@ export class AddQuestionComponent {
         selected: false,
       };
       // Call the service to add the question
-      this.questionsService.addQuestion(userQuestion).subscribe(() => {
-        // Reset the form fields after successful submission
-        this.question.reset();
-        this.answer.reset();
-        this.type = '';
-        this.tags = [];
-        this.difficulty = '';
-        this.displayForm = false;
+      this.questionsService.addQuestion(userQuestion).subscribe({
+        next: () => {
+          // Reset the form fields after successful submission
+          this.question.reset();
+          this.answer.reset();
+          this.type = '';
+          this.tags = [];
+          this.difficulty = '';
+          this.displayForm = false;
+        },
+        error: (error) => {
+          console.error("Could not add question to database", error)
+        }
       });
     }
   }
@@ -95,7 +103,7 @@ export class AddQuestionComponent {
   }
   displayFormHandler() {
     this.displayForm = true;
-    this.emitIsShown()
+    this.emitIsShown();
     setTimeout(() => {
       if (this.addQuestionForm) {
         this.addQuestionForm.nativeElement.scrollIntoView({
@@ -107,12 +115,12 @@ export class AddQuestionComponent {
   }
   onCancel() {
     this.displayForm = false;
-    this.emitIsShown()
+    this.emitIsShown();
   }
 
   onTagChange(event: any, tag: string) {
     if (event.checked) {
-      this.tags.push(tag);
+      this.tags.push(tag.toLowerCase());
     } else {
       const index = this.tags.indexOf(tag);
       if (index > -1) {

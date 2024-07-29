@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Edit Question</h2>
-<mat-dialog-content [formGroup]="editForm">
+<mat-dialog-content [formGroup]="editForm" class="modalContainer">
   <mat-form-field>
     <mat-label>Question</mat-label>
     <input matInput formControlName="question" [value]="data.question" />
@@ -9,7 +9,7 @@
     <input matInput formControlName="answer" [value]="data.answer" />
   </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="modalActions">
   <button mat-button (click)="onNoClick()">No Thanks</button>
   <button mat-button (click)="editQuestion()">Ok</button>
 </mat-dialog-actions>
