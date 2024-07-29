@@ -6,15 +6,18 @@
   </h4>
   <p>― Pablo Picasso</p>
 </div>
-<form (ngSubmit)="onsubmit()">
+<form (ngSubmit)="onsubmit()" @formAnimation>
   <mat-form-field [hideRequiredMarker]="true">
     <mat-label>Question</mat-label>
-    <input
+    <textarea
       matInput
       [formControl]="question"
       (blur)="updateErrorMessage()"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
       required
-    />
+    ></textarea>
     @if (question.invalid) {
     <mat-error>{{ errorMessage }}</mat-error
     >}
@@ -25,6 +28,9 @@
       matInput
       [formControl]="answer"
       (blur)="updateErrorMessage()"
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
       required
     ></textarea>
     @if (answer.invalid) {

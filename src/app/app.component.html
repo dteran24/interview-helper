@@ -1,8 +1,8 @@
 <div class="appContainer">
   @if (questions.length) {
-  <filter (filterChanged)="handleFilterChange($event)"/>}
+  <filter (filterChanged)="handleFilterChange($event)" />}
 
-  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat }">
+  <div [ngClass]="{ flex: changeFormat, noFlex: !changeFormat, center: hideList }">
     <div>
       <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
         @if (filteredList.length) {
@@ -15,16 +15,21 @@
           <button mat-menu-item (click)="turnOffEdit()">Cancel</button>
           }@else {
           <button mat-menu-item (click)="turnOnEdit()">Edit</button>
-          <button mat-menu-item (click)="hideListOn()">Hide</button>}
+          @if (hideList) {
+          <button mat-menu-item (click)="hideListOff()">Show</button>
+          }@else { <button mat-menu-item (click)="hideListOn()">Hide</button>} }
         </mat-menu>
         }
       </div>
       @if (filteredList.length) {
       <div
         class="questionContainer"
-        [ngClass]="{ grid: !changeFormat, questionsContainer: changeFormat }"
+        [ngClass]="{
+          grid: !changeFormat,
+          questionsContainer: changeFormat,
+        }"
       >
-        @for (item of filteredList; track item.id) {
+        @if (!hideList) { @for (item of filteredList; track item.id) {
         <question-card
           [question]="item"
           (selectedCardData)="handleSelectedCard($event)"
@@ -33,7 +38,7 @@
           [editMode]="editMode"
           (cardUpdated)="handleEditMode($event)"
         />
-        }
+        } }
       </div>
       }@else if(!filteredList.length && questions.length) {
       <span>There are no results!</span>
@@ -68,6 +73,6 @@
     </div>
     }
   </div>
-  <add-question (isShown)="handleOpenForm($event)"/>
+  <add-question (isShown)="handleOpenForm($event)" />
 </div>
 <router-outlet />

@@ -3,6 +3,13 @@ form
     flex-direction: column
     margin: 0 auto
     max-width: 30rem
+    opacity: 0
+    transform: translateY(-20px)
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out
+    &.ng-trigger-formAnimation 
+        opacity: 1
+        transform: translateY(0)
+
 .buttonContainer
     display: flex
     justify-content: space-between

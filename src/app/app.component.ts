@@ -155,6 +155,9 @@ export class AppComponent implements OnInit {
   hideListOn() {
     this.hideList = true;
   }
+  hideListOff() {
+    this.hideList = false;
+  }
 
   ngOnDestroy(): void {
     if (this.questionsSubscription) {

@@ -25,6 +25,9 @@ import {
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { QuestionDTO } from '../../models/question';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'add-question',
@@ -42,9 +45,30 @@ import { QuestionDTO } from '../../models/question';
     MatMenuModule,
     MatCheckboxModule,
     MatButtonToggleModule,
+    TextFieldModule,
   ],
   templateUrl: './add-question.component.html',
   styleUrl: './add-question.component.sass',
+  animations: [
+    trigger('formAnimation', [
+      state(
+        'void',
+        style({
+          opacity: 0,
+          transform: 'translateY(-20px)',
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+        })
+      ),
+      transition('void => *', [animate('300ms ease-in-out')]),
+      transition('* => void', [animate('300ms ease-in-out')]),
+    ]),
+  ],
 })
 export class AddQuestionComponent {
   @ViewChild('addQuestionForm') addQuestionForm: ElementRef | undefined;
@@ -85,16 +109,11 @@ export class AddQuestionComponent {
       this.questionsService.addQuestion(userQuestion).subscribe({
         next: () => {
           // Reset the form fields after successful submission
-          this.question.reset();
-          this.answer.reset();
-          this.type = '';
-          this.tags = [];
-          this.difficulty = '';
-          this.displayForm = false;
+          this.resetForm();
         },
         error: (error) => {
-          console.error("Could not add question to database", error)
-        }
+          console.error('Could not add question to database', error);
+        },
       });
     }
   }
@@ -114,6 +133,7 @@ export class AddQuestionComponent {
     }, 0);
   }
   onCancel() {
+    this.resetForm();
     this.displayForm = false;
     this.emitIsShown();
   }
@@ -127,6 +147,15 @@ export class AddQuestionComponent {
         this.tags.splice(index, 1);
       }
     }
+  }
+
+  resetForm() {
+    this.question.reset('', { emitEvent: false });
+    this.answer.reset('', { emitEvent: false });
+    this.type = '';
+    this.tags = [];
+    this.difficulty = '';
+    this.errorMessage = '';
   }
 
   updateErrorMessage() {
