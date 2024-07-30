@@ -1,6 +1,7 @@
-@if (question) {
+@if (question && !isDeleting) {
 <mat-card
   class="card"
+  @swipeOut
   [ngClass]="{
       widthLarge: changeFormat,
       widthSmall: !changeFormat,

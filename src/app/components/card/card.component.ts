@@ -15,6 +15,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { QuestionsService } from '../../services/questions.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'question-card',
@@ -22,6 +29,16 @@ import { ModalComponent } from '../modal/modal.component';
   imports: [NgClass, MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './card.component.html',
   styleUrl: './card.component.sass',
+  animations: [
+    trigger('swipeOut', [
+      transition('* => void', [
+        animate(
+          '1s ease-in',
+          style({ opacity: 0, transform: 'translateX(100%)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class CardComponent {
   //recieve data from parent componenet
@@ -35,6 +52,8 @@ export class CardComponent {
   @Output() cardDeleted = new EventEmitter<Question>();
   @Output() cardUpdated = new EventEmitter<Question>();
 
+  isDeleting: boolean = false;
+
   constructor(
     private questionService: QuestionsService,
     private dialog: MatDialog
@@ -44,19 +63,19 @@ export class CardComponent {
     const dialogRef = this.dialog.open(ModalComponent, {
       data: question,
     });
-  //notify parent component if update complete
+    //notify parent component if update complete
     dialogRef.afterClosed().subscribe((result) => {
       if (result.success) {
         this.cardUpdated.emit(result.question);
       }
     });
   }
-//if card is selected it is main
+  //if card is selected it is main
   selectItem() {
     this.selectedCardData.emit(this.question);
     this.resetShowAnswer();
   }
-//toggle display answer or question
+  //toggle display answer or question
   show() {
     if (this.selectedQuestion) {
       this.selectedQuestion.selected = !this.selectedQuestion.selected;
@@ -71,6 +90,7 @@ export class CardComponent {
   //call service to delete card and notfiy parent component
   deleteCard(event: Event): void {
     event.stopPropagation();
+    this.isDeleting = true;
     if (this.question) {
       this.questionService.removeQuestion(this.question.id).subscribe({
         next: () => {

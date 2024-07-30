@@ -27,7 +27,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { QuestionDTO } from '../../models/question';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 
 @Component({
   selector: 'add-question',
@@ -110,6 +116,8 @@ export class AddQuestionComponent {
         next: () => {
           // Reset the form fields after successful submission
           this.resetForm();
+          this.displayForm = false;
+          this.emitIsShown();
         },
         error: (error) => {
           console.error('Could not add question to database', error);
@@ -132,7 +140,8 @@ export class AddQuestionComponent {
       }
     }, 0);
   }
-  onCancel() {
+  onCancel(event: Event) {
+    event.preventDefault();
     this.resetForm();
     this.displayForm = false;
     this.emitIsShown();
@@ -150,8 +159,8 @@ export class AddQuestionComponent {
   }
 
   resetForm() {
-    this.question.reset('', { emitEvent: false });
-    this.answer.reset('', { emitEvent: false });
+    this.question.reset();
+    this.answer.reset();
     this.type = '';
     this.tags = [];
     this.difficulty = '';

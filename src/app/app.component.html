@@ -24,7 +24,7 @@
         </mat-menu>
         }
       </div>
-      @if (filteredList.length) {
+      @if (filteredList.length && !hideList) {
       <div
         class="questionContainer"
         [ngClass]="{
@@ -32,7 +32,7 @@
           questionsContainer: changeFormat,
         }"
       >
-        @if (!hideList) { @for (item of filteredList; track item.id) {
+        @for (item of filteredList; track item.id) {
         <question-card
           [question]="item"
           (selectedCardData)="handleSelectedCard($event)"
@@ -41,7 +41,7 @@
           [editMode]="editMode"
           (cardUpdated)="handleEditMode($event)"
         />
-        } }
+        }
       </div>
       }@else if(!filteredList.length && questions.length) {
       <div class="noResultsContainer">
