@@ -18,6 +18,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { QuestionsService } from '../../services/questions.service';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-modal',
@@ -32,6 +33,7 @@ import { QuestionsService } from '../../services/questions.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    TextFieldModule,
   ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.sass',
@@ -45,7 +47,7 @@ export class ModalComponent {
     public data: Question,
     private dialogRef: MatDialogRef<ModalComponent>,
     private questionService: QuestionsService,
-    private fb: FormBuilder,
+    private fb: FormBuilder
   ) {
     this.editForm = this.fb.group({
       question: [data.question],
@@ -59,18 +61,24 @@ export class ModalComponent {
       question: this.editForm.value.question,
       answer: this.editForm.value.answer,
     };
-
-    this.questionService.editQuestion(updatedQuestion).subscribe({
-      next: () => {
-        this.didUpdate = true;
-        this.dialogRef.close({ success: this.didUpdate, question: updatedQuestion });
-      },
-      error: (error) => {
-        console.error("could not update", error);
-        this.didUpdate = false;
-        this.dialogRef.close({ success: this.didUpdate });
-      },
-    });
+    if (updatedQuestion !== this.data) {
+      this.questionService.editQuestion(updatedQuestion).subscribe({
+        next: () => {
+          this.didUpdate = true;
+          this.dialogRef.close({
+            success: this.didUpdate,
+            question: updatedQuestion,
+          });
+        },
+        error: (error) => {
+          console.error('could not update', error);
+          this.didUpdate = false;
+          this.dialogRef.close({ success: this.didUpdate });
+        },
+      });
+    } else {
+      this.onNoClick();
+    }
   }
 
   onNoClick(): void {

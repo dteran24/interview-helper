@@ -26,7 +26,6 @@ import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { QuestionDTO } from '../../models/question';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   trigger,
   state,

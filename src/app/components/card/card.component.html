@@ -15,28 +15,36 @@
       aria-label="Example icon button with a vertical three dot icon"
       (click)="deleteCard($event)"
     >
-      <mat-icon style="color: red;">delete</mat-icon>
+      <mat-icon style="color: red">delete</mat-icon>
     </button>
     <button
-    mat-icon-button
-    aria-label="Example icon button with a vertical three dot icon"
-    (click)="openDialog(question)"
-  >
-    <mat-icon style="color: rgb(255, 187, 0);">edit</mat-icon>
-  </button>
+      mat-icon-button
+      aria-label="Example icon button with a vertical three dot icon"
+      (click)="openDialog(question)"
+    >
+      <mat-icon style="color: rgb(255, 187, 0)">edit</mat-icon>
+    </button>
   </div>
   }
 
-  <mat-card-content> {{ question.question }}</mat-card-content>
+  <mat-card-content class="cardContent"> {{ question.question }}</mat-card-content>
 </mat-card>
 }@else if (selectedQuestion) {
-<mat-card class="card selectedCard widthLarge" (click)="show()"
-  ><mat-card-content>
-    @if (selectedQuestion.selected) {
-    <p class="answerText">{{ selectedQuestion.answer }}</p>
-    }@else {
-    <p>{{ selectedQuestion.question }}</p>
-    }
+<mat-card class="card selectedCard widthLarge" (click)="show()">
+  <mat-card-content class="cardContent">
+    <p
+      [ngStyle]="{
+        'font-size': selectedQuestion.selected
+          ? getFontSize(selectedQuestion.answer)
+          : getFontSize(selectedQuestion.question)
+      }"
+    >
+      {{
+        selectedQuestion.selected
+          ? selectedQuestion.answer
+          : selectedQuestion.question
+      }}
+    </p>
   </mat-card-content>
 </mat-card>
 }

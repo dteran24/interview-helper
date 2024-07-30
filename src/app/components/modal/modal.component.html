@@ -2,11 +2,25 @@
 <mat-dialog-content [formGroup]="editForm" class="modalContainer">
   <mat-form-field>
     <mat-label>Question</mat-label>
-    <input matInput formControlName="question" [value]="data.question" />
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
+      formControlName="question"
+      [value]="data.question"
+    ></textarea>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Answer</mat-label>
-    <input matInput formControlName="answer" [value]="data.answer" />
+    <textarea
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="10"
+      formControlName="answer"
+      [value]="data.answer"
+    ></textarea>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions class="modalActions">

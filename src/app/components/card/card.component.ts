@@ -1,15 +1,12 @@
 import {
   Component,
   EventEmitter,
-  inject,
-  input,
   Input,
   Output,
-  output,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Question } from '../../models/question';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { QuestionsService } from '../../services/questions.service';
@@ -17,7 +14,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalComponent } from '../modal/modal.component';
 import {
   trigger,
-  state,
   style,
   transition,
   animate,
@@ -26,7 +22,7 @@ import {
 @Component({
   selector: 'question-card',
   standalone: true,
-  imports: [NgClass, MatCardModule, MatIconModule, MatButtonModule],
+  imports: [NgClass, MatCardModule, MatIconModule, MatButtonModule,NgStyle],
   templateUrl: './card.component.html',
   styleUrl: './card.component.sass',
   animations: [
@@ -101,5 +97,15 @@ export class CardComponent {
         },
       });
     }
+  }
+
+  // Determines font size based on the content length
+  getFontSize(content: string): string {
+    if (!content) return '16px'; // Default font size
+    const length = content.length;
+    console.log(length)
+    if (length < 50) return '24px'; // Large font size for short text
+    if (length < 100) return '16px'; // Medium font size for moderate text
+    return '14px'; // Small font size for long text
   }
 }
