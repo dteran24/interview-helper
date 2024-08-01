@@ -1,18 +1,27 @@
+@import '../../sass/_mixins.scss'
+@import '../../sass/_variables.scss'
+
 .iconContainer
     text-align: right
 
 .filterContainer
-    display: flex
-    justify-content: space-between
     background: #750710
     border-radius: 6px
     padding: 1rem
-    margin: 0 1.5rem
-    gap: 0 2rem
+    margin: .5rem 1.5rem
     color: #FFF
+
+    @include respond-to(mobile)
+        margin: 0
+.dropdownContainer
+    display: flex
+    justify-content: space-between
+    align-items: center
 .menuButton
     font-size: 1rem
-.menuButtonContainer
+.buttonsContainer
+    display: flex
+    flex-direction: column
 
 .container
     display: flex
@@ -25,7 +34,8 @@
     padding: 1rem !important
 .activeFilterContainer
     display: flex
-    gap: 0rem 2rem
+    flex-wrap: wrap
+    gap: 1rem 2rem
     margin: 1rem 0
 .filterButton
     background-color: #ffffff
