@@ -8,7 +8,7 @@
     <div>
       <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
         @if (filteredList.length) {
-        <button mat-button class="menuButton" [matMenuTriggerFor]="typeMenu">
+        <button mat-button [matMenuTriggerFor]="typeMenu">
           <mat-icon class="moreIcon">more_vert</mat-icon>
         </button>
 
@@ -26,6 +26,7 @@
       </div>
       @if (filteredList.length && !hideList) {
       <div
+        #questionContainer
         class="questionContainer"
         [ngClass]="{
           grid: !changeFormat,
@@ -46,6 +47,26 @@
       }@else if(!filteredList.length && questions.length) {
       <div class="noResultsContainer">
         <span>There are no results!</span>
+      </div>
+      } @if (displayArrows.down) {
+      <div class="arrowNav">
+        <button
+          mat-icon-button
+          aria-label="icon button with a arrow downward"
+          (click)="scrollBottom()"
+        >
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+      }@else if (displayArrows.up) {
+      <div class="arrowNav">
+        <button
+          mat-icon-button
+          aria-label="icon button with a arrow downward"
+          (click)="scrollTop()"
+        >
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
       </div>
       }
     </div>

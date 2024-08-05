@@ -103,7 +103,6 @@ export class CardComponent {
   getFontSize(content: string): string {
     if (!content) return '16px'; // Default font size
     const length = content.length;
-    console.log(length)
     if (length < 50) return '24px'; // Large font size for short text
     if (length < 100) return '16px'; // Medium font size for moderate text
     return '14px'; // Small font size for long text

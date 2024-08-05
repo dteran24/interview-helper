@@ -1,4 +1,10 @@
-import { Component, OnInit, output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  output,
+  ViewChild,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Question } from './models/question';
 import { CardComponent } from './components/card/card.component';
@@ -39,13 +45,17 @@ export class AppComponent implements OnInit {
   loading: boolean = false;
   editMode: boolean = false;
   hideList: boolean = false;
+  displayArrows = { down: false, up: false };
+
+  @ViewChild('questionContainer') scroll!: ElementRef;
 
   private questionsSubscription!: Subscription;
   private loadingSubscription!: Subscription;
-
+  private scrollListenerAdded: boolean = false;
+  
   constructor(
     private questionService: QuestionsService,
-    private settingsService: SettingsService
+    // private settingsService: SettingsService
   ) {}
   ngOnInit(): void {
     // Trigger the initial fetch
@@ -60,6 +70,8 @@ export class AppComponent implements OnInit {
           difficulties: [],
           tags: [],
         });
+
+        this.setDisplayArrows();
         // const hideListLocalStorage = this.settingsService.getItem('hideList');
         // if (hideListLocalStorage !== null) {
         //   this.hideList = JSON.parse(hideListLocalStorage);
@@ -77,17 +89,62 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
+  ngAfterViewChecked(): void {
+    if (this.changeFormat && !this.scrollListenerAdded) {
+      this.addScrollListener();
+    }
+  }
+
+  addScrollListener(): void {
+    if (this.scroll && !this.scrollListenerAdded) {
+      this.scroll.nativeElement.addEventListener(
+        'scroll',
+        this.onScroll.bind(this)
+      );
+      this.scrollListenerAdded = true;
+    }
+  }
+
+  removeScrollListener(): void {
+    if (this.scroll && this.scrollListenerAdded) {
+      this.scroll.nativeElement.removeEventListener(
+        'scroll',
+        this.onScroll.bind(this)
+      );
+      this.scrollListenerAdded = false;
+    }
+  }
+
+  onScroll(): void {
+    const element = this.scroll.nativeElement;
+    const atTop = element.scrollTop === 0;
+    const atBottom =
+      element.scrollHeight - element.scrollTop === element.clientHeight;
+
+    if (atTop && !this.hideList) {
+      this.displayArrows.down = true;
+      this.displayArrows.up = false;
+    }
+    if (atBottom && !this.hideList) {
+      this.displayArrows.up = true;
+      this.displayArrows.down = false;
+    }
+  }
+
   //if card is selected change format, show question
   handleSelectedCard(selectedQuestion: Question) {
     this.selectedCard = selectedQuestion;
     this.selectedCard.selected = false;
     this.changeFormat = true;
+    this.setDisplayArrows();
   }
   //if deleted card is selectedQuestion then next question is selected
   handleCardDeleted(deletedQuestion: Question) {
     if (this.filteredList.length === 0) {
       this.selectedCard = undefined;
       this.changeFormat = false;
+      this.hideArrows(this.displayArrows);
     }
     if (deletedQuestion.id === this.selectedCard?.id) {
       this.nextQuestion();
@@ -113,6 +170,7 @@ export class AppComponent implements OnInit {
     this.selectedCard = undefined;
     this.hideListOff();
     this.changeFormat = false;
+    this.hideArrows(this.displayArrows);
   }
 
   applyFilters(filters: FilterCriteria): Question[] {
@@ -154,6 +212,25 @@ export class AppComponent implements OnInit {
       }
     }
   }
+  scrollTop() {
+    this.scroll.nativeElement.scrollTop = 0;
+    this.displayArrows.down = true;
+    this.displayArrows.up = false;
+  }
+  scrollBottom() {
+    this.scroll.nativeElement.scrollTop =
+      this.scroll.nativeElement.scrollHeight;
+    this.displayArrows.down = false;
+    this.displayArrows.up = true;
+  }
+  hideArrows(obj: any) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        obj[key] = false;
+      }
+    }
+  }
+
   turnOnEdit() {
     this.editMode = true;
   }
@@ -162,11 +239,22 @@ export class AppComponent implements OnInit {
   }
   hideListOn() {
     this.hideList = true;
+    this.hideArrows(this.displayArrows);
+    this.removeScrollListener();
     // this.settingsService.setItem('hideList', JSON.stringify(this.hideList));
   }
   hideListOff() {
     this.hideList = false;
+    this.addScrollListener();
+    this.displayArrows.down = true;    
     // this.settingsService.setItem('hideList', JSON.stringify(this.hideList));
+  }
+  setDisplayArrows() {
+    if (this.filteredList.length > 4 && this.changeFormat) {
+      this.displayArrows.down = true;
+    } else {
+      this.displayArrows.down = false;
+    }
   }
 
   ngOnDestroy(): void {
