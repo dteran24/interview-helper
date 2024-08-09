@@ -122,7 +122,11 @@ export class AppComponent implements OnInit {
 
   //function to add scrolllistener if not already added
   addScrollListener(): void {
-    if (this.scroll && !this.scrollListenerAdded) {
+    if (
+      this.scroll &&
+      !this.scrollListenerAdded &&
+      this.filteredList.length > 4
+    ) {
       this.scroll.nativeElement.addEventListener(
         'scroll',
         this.onScroll.bind(this)
@@ -169,6 +173,8 @@ export class AppComponent implements OnInit {
     if (this.filteredList.length === 0) {
       this.selectedCard = undefined;
       this.changeFormat = false;
+      this.hideArrows();
+    } else if (this.filteredList.length <= 4) {
       this.hideArrows();
     }
     if (deletedQuestion.id === this.selectedCard?.id) {
@@ -239,6 +245,7 @@ export class AppComponent implements OnInit {
   }
   //add keyboard support
   handleKeydown(event: KeyboardEvent): void {
+    event.preventDefault();
     if (event.key === 'ArrowLeft') {
       this.prevQuestion();
     } else if (event.key === 'ArrowRight') {
@@ -298,7 +305,7 @@ export class AppComponent implements OnInit {
   hideListOff() {
     this.hideList = false;
     this.addScrollListener();
-    this.displayArrows.down = true;
+    this.setDisplayArrows();
     // this.settingsService.setItem('hideList', JSON.stringify(this.hideList));
   }
 }
