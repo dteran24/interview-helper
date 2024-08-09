@@ -5,8 +5,13 @@
   <div
     [ngClass]="{ flex: changeFormat, noFlex: !changeFormat, center: hideList }"
   >
-    <div>
-      <div [ngClass]="{ showMenu: changeFormat, hideMenu: !changeFormat }">
+    <div [ngClass]="{ spaceUp: hideList }">
+      <div
+        [ngClass]="{
+          showMenu: changeFormat,
+          hideMenu: !changeFormat,
+        }"
+      >
         @if (filteredList.length) {
         <button mat-button [matMenuTriggerFor]="typeMenu">
           <mat-icon class="moreIcon">more_vert</mat-icon>
